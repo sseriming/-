@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.ivory.dao.MemberDao">
+
+	<!-- 회원가입 -->
+	<insert id="register" parameterType="egovframework.example.ivory.vo.MemberVo">
+		INSERT INTO member( userId,userPw,userEmail,enterDate)
+		VALUES(#{userId},#{userPw},#{userEmail},now())
+	</insert>
+
+	<!-- 	로그인 -->
+<select id="logincheck" resultType="String">
+		SELECT userEmail AS userEmail From member
+		WHERE userId = #{userId} AND userPw=#{userPw}
+	</select>
+	
+	<select id = "viewMember" resultType="egovframework.example.ivory.vo.MemberVo">
+		SELECT
+		userId AS userId,
+		userPw AS userPw,
+		userEmail AS userEmail,
+		enterDate AS enterDate
+		FROM member
+		WHERE userId = #{userId}
+		   AND userPw= #{userPw}   
+		   AND userEmail=#{userEmail}
+	</select>
+
+</mapper>

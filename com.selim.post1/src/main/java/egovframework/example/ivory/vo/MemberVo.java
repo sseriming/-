@@ -7,6 +7,9 @@ public class MemberVo {
 	private String userPw;
 	private String userEmail;
 	private Date enterDate;
+	private String userName;
+	
+
 	
 	public String getUserId() {
 		return userId;
@@ -39,9 +42,22 @@ public class MemberVo {
 	public void setEnterDate(Date enterDate) {
 		this.enterDate= enterDate;
 	}
-	
-	public String toString() {
-		return "MemberVo [userId=" + userId+ ", userPw=" + userPw + ", userEmail=" + userEmail+", enterDate="+ enterDate+"]";
+	public String getUserName() {
+		return userName;
 	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String toString() {
+		return "MemberVo [userId=" + userId+ ", userPw=" + userPw + ", userEmail=" + userEmail+", enterDate="+ enterDate+",userName=" + userName+ "]";            
+	}
+	
+	//비밀번호 확인
+	public boolean matchPassword(String pw) {
+		return this.userPw.equals(pw);
+	}
+
+
 	
 }

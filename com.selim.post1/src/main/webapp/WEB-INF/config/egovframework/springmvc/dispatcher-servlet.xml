@@ -12,6 +12,7 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
+    <context:component-scan base-package="egovframework.example.ivory.util"></context:component-scan>
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="webBindingInitializer">
@@ -43,10 +44,26 @@
             </props>
         </property>
     </bean>
+	<!-- 파일 업로드 설정 -->
+    <bean id="multipartResolver" 
+    	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="100000000" /> 
+        <property name="maxInMemorySize" value="100000000" /> 
+    </bean>
+    
+    <!-- 파일 업로드 디렉토리 설정 -->
+    <bean id="uploadPath" class="java.lang.String">
+        <constructor-arg value="C:\\upload\\"/>
+    </bean>
+
 
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
 	    p:viewClass="org.springframework.web.servlet.view.JstlView"
 	    p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
+	    
+	    
+	    
+	    
 
     <!-- For Pagination Tag -->
     <bean id="imageRenderer" class="egovframework.example.cmmn.web.EgovImgPaginationRenderer"/>

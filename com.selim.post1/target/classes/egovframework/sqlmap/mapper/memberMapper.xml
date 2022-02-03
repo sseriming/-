@@ -6,13 +6,26 @@
 
 	<!-- 회원가입 -->
 	<insert id="register" parameterType="egovframework.example.ivory.vo.MemberVo">
-		INSERT INTO member( userId,userPw,userEmail,enterDate)
-		VALUES(#{userId},#{userPw},#{userEmail},now())
+		INSERT INTO member( userId,userPw,userEmail,enterDate,userName)
+		VALUES(#{userId},#{userPw},#{userEmail},now(),#{userName})
 	</insert>
 
+	<!--아이디확인 -->
+	<select id="idCheck" parameterType="egovframework.example.ivory.vo.MemberVo" resultType="int">
+		SELECT COUNT(*) FROM member
+		WHERE
+			userId=#{userId}
+	</select>
+
+	<select id="login" parameterType="egovframework.example.ivory.vo.LoginDto" resultType="int">
+		SELECT COUNT(*) FROM member
+		WHERE userId=#{userId}
+	</select>
+
 	<!-- 	로그인 -->
-<select id="logincheck" resultType="String">
-		SELECT userEmail AS userEmail From member
+	<select id="loginCheck"  parameterType="egovframework.example.ivory.vo.MemberVo" resultType="int">
+		SELECT COUNT(*)
+		FROM member
 		WHERE userId = #{userId} AND userPw=#{userPw}
 	</select>
 	
@@ -21,11 +34,11 @@
 		userId AS userId,
 		userPw AS userPw,
 		userEmail AS userEmail,
-		enterDate AS enterDate
+		enterDate AS enterDate,
+		userName As userName
 		FROM member
 		WHERE userId = #{userId}
 		   AND userPw= #{userPw}   
-		   AND userEmail=#{userEmail}
 	</select>
 
 </mapper>

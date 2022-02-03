@@ -23,7 +23,7 @@
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
     crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<!-- <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script> -->
 </head>
 <body>
 <br/>
@@ -32,18 +32,34 @@
 <br/>
 <div class="container">
         <form id="form_test" action="insertTest.do" method="post"
-            encType="multiplart/form-data">
+            encType="multipart/form-data">
+            
+            <input type="hidden" id="orgName" name="orgName" class="form-control" />
+            <input type="hidden" id="fileSize" name="fileSize" class="form-control" />
+            
+            
             <table class="table table-bordered">
                 <tbody>
                     <tr>
                         <th>제목</th>
-                        <td><input type="text" placeholder="제목을 입력하세요."
-                            name="testTitle" class="form-control" /></td>
+                        <td><input type="text" placeholder="제목을 입력하세요." maxlength="50"
+                            id="testTitle" name="testTitle" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th>작성자</th>
+                        <td>
+                        <input  type="text" value="${userId}" id="testName" name="testName"
+                        readonly class="form-control"  />
+                        </td>
                     </tr>
                     <tr>
                         <th>내용</th>
-                        <td><textarea placeholder="내용을 입력하세요 ." name="testContent"
-                                class="form-control" style="height: 200px;"></textarea></td>
+                        <td><textarea placeholder="내용을 입력하세요 ." maxlength="300"  
+                        name="testContent" id="testContent" class="form-control" style="height: 200px;"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>첨부파일</th>
+                        <td><input type="file" name="file" id="file"  onchange="valExt()" ></td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -53,19 +69,70 @@
  
                 </tbody>
             </table>
+<!--             <div id= "fileDiv"> -->
+<!--             <p> -->
+<!--             <input type="file" name="file" id="file"  onchange="valExt()"  > -->
+<!--             <button id="btn_register" type="button" class="btn_register" style="float: right;" style="margin-left:10px;">등록</button> -->
+<!--             <button id="btn_previous" type="button" class="btn_previous" style="float: right;"   >이전</button> -->
+<!--             </p> -->
+<!--             </div> -->
         </form>
     </div>
 </body>
 <script type="text/javascript">
-    //글쓰기 
-    $(document).on('click', '#btn_register', function(e) {
-        $("#form_test").submit();
-    });
- 
-    //이전 클릭 시 testList로 이동
-    $("#btn_previous").click(function previous() {
-        $(location).attr('href', 'testList.do');
- 
-    });
+		$(document).ready(function(){
+			//이전 클릭
+			$("#btn_previous").click(function previous() {
+	        	$(location).attr('href', 'testList.do');
+	   		 });
+			
+			//등록 클릭
+			$("#btn_register").on("click",function() {
+				if($("#testTitle").val()==""){
+					alert("제목을 입력해주세요.");ㅣ					
+					return false;
+				}
+				if($("#testContent").val()==""){
+					alert("내용을 입력해주세요.");
+					return false;
+				}
+				$("#form_test").submit();
+			})
+		});
+
+		/*확장자 및 파일 용량 체크*/
+		function valExt(){
+// 			alert("ddd");
+			
+		       if($("#file").val()!=""){
+		              file_nm = $("#file").val();
+		              var fSize = document.getElementById("file").files[0].size;
+// 		              var fName = document.getElementById("orgName"); 
+		              var result = false;
+		              file_ext = file_nm.substring(file_nm.lastIndexOf(".") , file_nm.length).toLowerCase();
+		              var arrExt = new Array(".gif", ".jpg",".jpeg",".png",".bmp",".pdf",".hwp",".zip");
+		              for(var i=0; i<arrExt.length; i++) {
+		                     if(arrExt[i] == file_ext) {
+		                            result = true;
+		                     }
+		              }
+		              if(result==true){
+		              $("#fileSize").val(fSize);
+		              $("#orgName").val(file_nm);
+		              }else{
+		                     $("#file").replaceWith( $("#file").clone(true) );
+		                     alert("등록가능한 확장자가 아닙니다. 확장자명을 확인해주십시오(gif,jpg,jpeg,png,bmp,pdf,hwp,zip)");
+		                     $("#file").val("");
+		              }
+		       }else{
+		              alert("파일을 선택해주십시오.");
+		              $("#file").val("");
+		       }
+
+		}
+		
+		
+		
+    
 </script>
 </html>

@@ -1,17 +1,20 @@
 package egovframework.example.ivory.vo;
- 
+
 public class TestVo {
     
-    private int testId;
+    private String testId;
     private String testTitle;
     private String testContent;
     private String testName;
     private String testDate;
+
+
+
     
-    public int getTestId() {
+    public String getTestId() {
         return testId;
     }
-    public void setTestId(int testId) {
+    public void setTestId(String testId) {
         this.testId = testId;
     }
     public String getTestTitle() {
@@ -38,5 +41,18 @@ public class TestVo {
     public void setTestDate(String testDate) {
         this.testDate = testDate;
     }
-    
+  	
+	@Override
+	public String toString() {
+		return "TestVo [testId="+testId+", testTitle="+testTitle+",testContent="+testContent+",testName="+testName+",testDate="+testDate+"]";
+	}
 }
+
+
+
+
+
+
+
+
+

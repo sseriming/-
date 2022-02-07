@@ -43,7 +43,6 @@ a {
     		out.print("  "+"<a href='/register.do'>  join</a>"+"<br>");
     	}
     %>
-<!--         <a class="btn btn-outline-info" style="float: right" href="logout.do" >로그아웃</a> -->
         <table class="table table-hover table-striped text-center"
             style="border: 1px solid;">
             <colgroup>
@@ -66,7 +65,6 @@ a {
                     <tr>
                         <td>${result.testId}</td>                        
                         <td><a href="testDetail.do?testId=${result.testId}">${result.testTitle}</a></td>
-<%--                         <td><a href="#" onclick="listFunction();">${result.testTitle}</a></td> --%>
                         <td>${result.testName}</td>
                         <td>${result.testDate}</td>
                     </tr>
@@ -104,7 +102,6 @@ a {
     	<c:if test="${sessionScope.userId !=null }">
     		<a class="btn btn-outline-info" style="float: right" href="testRegister.do">글쓰기</a>
     	</c:if>
-<!--         <a class="btn btn-outline-info" style="float: right" href="testRegister.do">글쓰기</a> -->
  
         <!-- search start -->
         <div class="form-group row">
@@ -118,7 +115,7 @@ a {
             </div>
  
             <div class="w300" style="padding-right: 10px">
-                <input type="text" class="form-control form-control-sm" name="keyword" id="keyword" >
+                <input type="text" class="form-control form-control-sm" name="keyword" id="keyword" maxlength="50" >
             </div>
  
             <div>
@@ -162,15 +159,6 @@ a {
         location.href = url;
         }
  
-    function listFunction() {
-    	session = request.getSession();
-    	if(session.getAttribute("userSession")!= null) {
-    		 href="testDetail.do?testId=${result.testId}";
-    		
-    	} else {
-    		alert("글 읽기 권한이 없습니다. 로그인 후 이용해주세요.");
-    	}
-    }
  
     //페이지 번호 클릭
     function fn_pagination(page, range, rangeSize, listSize, searchType, keyword) {

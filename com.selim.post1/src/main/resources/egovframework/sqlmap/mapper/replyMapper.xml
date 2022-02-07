@@ -7,7 +7,7 @@
 	<select id="selectReplyNo" resultType="java.lang.String">
 	SELECT IFNULL(MAX(replyNo),0)+1 FROM reply	
 	</select>
-
+	<!--IFNULL은 값이 하나도 없을 경우 NULL처리를 해주는 함수  오라클의 NVL과 같은 역할-->
 
 	<!-- 댓글 조회 -->
 	<select id="replyList" parameterType="java.lang.String" resultType="egovframework.example.ivory.vo.ReplyVo">

@@ -14,7 +14,7 @@ public interface ReplyService {
     
     public int replyModify(ReplyVo replyVo) throws Exception;
     
-    public int replyDelete(ReplyVo replyVo) throws Exception;
+    public int replyDelete(String replyNo) throws Exception;
     
 	public String selectReplyNo();
  

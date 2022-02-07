@@ -63,19 +63,12 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <button id="btn_register" type="button" class="btn_register">등록</button>
-                            <button id="btn_previous" type="button" class="btn_previous">이전</button>
+                            <button id="btn_register" type="button" name="btn_register" class="btn btn-sm btn-primary">등록</button>
+                            <button id="btn_previous" type="button" name="btn_previous" class="btn btn-sm btn-primary">이전</button>
                     </tr>
  
                 </tbody>
             </table>
-<!--             <div id= "fileDiv"> -->
-<!--             <p> -->
-<!--             <input type="file" name="file" id="file"  onchange="valExt()"  > -->
-<!--             <button id="btn_register" type="button" class="btn_register" style="float: right;" style="margin-left:10px;">등록</button> -->
-<!--             <button id="btn_previous" type="button" class="btn_previous" style="float: right;"   >이전</button> -->
-<!--             </p> -->
-<!--             </div> -->
         </form>
     </div>
 </body>

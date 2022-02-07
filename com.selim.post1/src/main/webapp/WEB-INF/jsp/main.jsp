@@ -27,13 +27,17 @@
 			 location.href="/register.do"
        });
 		
+			//게시판이동 버튼
+		 $("#boardList").click(function() {
+			 location.href="/testList.do"
+       });
+		
 		
 		 
 		//로그인 버튼
 		$("#btnLogin").on("click",function() {
 			var userId = $('#userId').val();
 			var userPw= $('#userPw').val();
-			console.log("userId :"+userId+","+"userPw: "+userPw);
 			var data = {userId:userId, userPw:userPw}
 			if(userId==""){
 				alert("아이디를 입력해주세요.");
@@ -46,20 +50,16 @@
 				return false;
 			}
 			else{
-				console.log("ajax");
-// 				$("login_form").submit();
 				$.ajax({
 					type:"POST",
 					url:"/loginCheck.do",
 					data: data,
 					success:function(login) {
-						console.log(login);
 						if(login != 'false') {
 							location.href="testList.do"
 						}
 													
 						else {
-
 							alert("잘못된 아이디이거나, 비밀번호가 틀렸습니다.");
 							
 						}
@@ -69,7 +69,6 @@
 		});
 		
 		
-
 	})
 	
 	
@@ -82,23 +81,18 @@
 		<table border="1" width="600px" height="300px" style="margin-left:auto; margin-right: auto; margin-top:100px">
 			<tr>
 				<td class="text-center">아이디</td>
-				<td><input class="id_input" name="userId" id="userId"></td>
+				<td><input class="id_input" name="userId" id="userId" maxlength="50"></td>
 			</tr>
 			<tr>
 				<td class="text-center">비밀번호</td>
-				<td><input class="pw_input" type="password" name="userPw" id="userPw"></td>
+				<td><input class="pw_input" type="password" name="userPw" id="userPw" maxlength="100"></td>
 			</tr>
 
 			<tr>
 				<td colspan="2" align="center" >
 					<button type="button" id="btnLogin" class="btnLogin" >로그인</button> 
-<%-- 					<c:if --%>
-<%-- 						test="${msg == 'failure'}"> --%>
-<!-- 						<div style="color: red">아이디 또는 비밀번호가 일치하지 않습니다.</div> -->
-<%-- 					</c:if> <c:if test="${msg == 'logout'}"> --%>
-<!-- 						<div style="color: red">로그아웃 되었습니다.</div> -->
-<%-- 					</c:if> --%>
 					<button type="button" id="btnregister" class="btnRegister" >회원가입</button>
+					<button type="button" id="boardList" class="boardList" >게시판 이동</button>
 				</td>
 			</tr>
 			

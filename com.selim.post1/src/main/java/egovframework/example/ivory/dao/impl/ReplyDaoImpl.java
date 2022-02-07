@@ -37,9 +37,9 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 
 	@Override
-	public int replyDelete(ReplyVo replyVo) throws Exception {
+	public int replyDelete(String replyNo) throws Exception {
 		 ReplyMapper mapper = sqlSession.getMapper(ReplyMapper.class);
-	     return mapper.replyDelete(replyVo);
+	     return mapper.replyDelete(replyNo);
 	}
 
 	@Override

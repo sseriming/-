@@ -16,7 +16,6 @@ public class UserRepository {
 	private final List<Map<String, String>> userList= new ArrayList<>();
 	
 	public UserRepository() {
-//		System.out.println("UserRepository 초기화");
 		MemberVo memberVo = new MemberVo();
 		
 		Map<String, String> userInfoOne = new HashMap<String, String>();

@@ -30,33 +30,15 @@ public class MemberController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	
-	
-	//로그인 화면
-//	@RequestMapping("/login.do")
-//	public String login() {
-//		return "login";
-//	}
-	
-
-
 	//로그인 처리
-	@RequestMapping(value = "/loginCheck.do",method = RequestMethod.POST)
+	@RequestMapping(value = "/loginCheck.do", method = RequestMethod.POST)
 	public void loginCheck(
 			@RequestParam String userPw,
 			@RequestParam String userId,
-			HttpServletRequest request, HttpSession httpSession, HttpServletResponse response,Model model) throws Exception {
-//		String userId= request.getParameter("userId");
-//		String userPw= request.getParameter("userPw");
+			HttpServletRequest request, HttpSession httpSession, HttpServletResponse response, Model model) throws Exception {
 		
-//		System.out.println("userId :"+userId+","+"userPw: "+userPw);
 		MemberVo memberVo= new MemberVo();
 		HttpSession session = request.getSession();
-		
-//		session.setAttribute("userName",memberVo.getUserName());
-//		String userId = (String) session.getAttribute("userId");
-//		String userName = (String) session.getAttribute("userName");
-//		String userPw= (String) session.getAttribute("userPw");
 		
 		memberVo.setUserId(userId);
 		memberVo.setUserPw(userPw);
@@ -65,30 +47,27 @@ public class MemberController {
 		
 		
 		if(login >= 1) {			
-			session.setAttribute("userId",memberVo.getUserId());
-//			session.setAttribute("userPw",memberVo.getUserPw());
+				session.setAttribute("userId",memberVo.getUserId());
 				model.addAttribute("login",login);
-				response.getWriter().print(true);
+				response.getWriter().print(true); 
 		}else {
-				response.getWriter().print(false);
+				response.getWriter().print(false); 
 			}		
 	}
 	
 	
 	//로그아웃 처리
 	@RequestMapping("logout.do")
-	public ModelAndView logout(HttpSession session) throws Exception {
-		service.logout(session);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("main");
-		return mav;
+	public String logout(HttpServletRequest request) throws Exception {
+	
+		HttpSession session = request.getSession();
+		session.invalidate();
+		return "main";
 	}
 	
 	//회원가입 get
 	@RequestMapping(value = "/register.do", method = RequestMethod.GET)
 	public void getRegister(HttpSession session) throws Exception { 
-//		logger.info("get register");
-		System.out.println("회원가입 페이지 진입");
 		System.out.println("session id: "+session.getId());
 	}
 	
@@ -98,24 +77,11 @@ public class MemberController {
 		
 		//세션
 		HttpSession session = request.getSession();
-		//가입자 정보
+		//세션처리를 위해 userId get
 		String userId= memberVo.getUserId();
-		String userName = memberVo.getUserName();
-		String userPw = memberVo.getUserPw();
-		String userEmail= memberVo.getUserEmail();
 		
-		//회원정보 저장
-		Map<String, String> userInfoMap = new HashMap<String, String>();
-		userInfoMap.put("userId", userId);
-		userInfoMap.put("userName", userName);
-		userInfoMap.put("userPw", userPw);
-		userInfoMap.put("userEmail", userEmail);
-		
-		//db에 저장
-		userRepository.saveUser(userInfoMap);
+		//로직
 		service.register(memberVo);
-		
-		
 		session.setAttribute("userSession", userId);
 		
 		return "main";
@@ -128,10 +94,8 @@ public class MemberController {
 	@ResponseBody
 	public String memberIdChkPOST(String userId) throws Exception{
 		
-//		logger.info("memberIdChk() 진입");
 		int result = service.idCheck(userId);
 		
-//		logger.info("결과값 = " + result);		
 		if(result != 0) {
 			
 			return "fail";	// 중복 아이디가 존재

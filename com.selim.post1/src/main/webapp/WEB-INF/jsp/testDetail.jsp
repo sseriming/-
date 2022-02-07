@@ -71,22 +71,41 @@
                     </tr>
                     <tr>
                         <th>제목</th>
+                        <c:choose>
+                        <c:when  test="${vo.testName != sessionScope.userId }" >
+                        <td><input type="text" value="${vo.testTitle}" maxlength="50"
+                            name="testTitle" class="form-control" readonly /></td>
+                        </c:when>
+                        <c:when  test="${vo.testName == sessionScope.userId }" >
                         <td><input type="text" value="${vo.testTitle}" maxlength="50"
                             name="testTitle" class="form-control" /></td>
+                        </c:when></c:choose>
                     </tr>
                     <tr>
                         <th>내용</th>
+                        <c:choose>
+                        <c:when  test="${vo.testName != sessionScope.userId }" >
                         <td><textarea name="testContent" class="form-control" maxlength="300"
-                                style="height: 200px;">${vo.testContent}</textarea></td> 
+                                style="height: 200px;" readonly>${vo.testContent} </textarea></td> 
+                        </c:when>
+                        <c:when  test="${vo.testName == sessionScope.userId }" >
+                        <td><textarea name="testContent" class="form-control" maxlength="300"
+                                style="height: 200px;" >${vo.testContent} </textarea></td> 
+                        </c:when></c:choose>
                     </tr>
 					<tr>
                         <th>첨부파일</th>
+                        <c:choose>
+                        <c:when  test="${vo.testName != sessionScope.userId }" >
+                        <td><input type="hidden" name="file" id="file"  onchange="valExt()">
+                        <a href="#" onclick="fn_fileDown('${file.fileNo}'); return false;">${file.orgName}</a><br>
+                        </c:when>
+                        <c:when  test="${vo.testName == sessionScope.userId }" >
                         <td><input type="file" name="file" id="file"  onchange="valExt()">
                         <a href="#" onclick="fn_fileDown('${file.fileNo}'); return false;">${file.orgName}</a><br>
-                        <c:if test="${vo.testName == sessionScope.userId }" >
                         <button id="filedelete" onclick="deleteFile('${file.fileNo}')" name="filedelete" type="button" class="btn btn-sm btn-primary" style="float: right">파일삭제</button>
-                        </c:if>
                         </td>
+                        </c:when></c:choose>
                     </tr>
                     <tr>
                     <c:if test="${vo.testName == sessionScope.userId }" >
@@ -104,39 +123,28 @@
                 </tbody>
             </table>
         </form>
-	<ul>
-	
-<!-- 	<li> -->
-<!-- 	<div> -->
-<!-- 		<p>첫번재 댓글 작성자</p> -->
-<!-- 		<p>첫번째 댓글</p> -->
-<!-- 		</div> -->
-<!-- 	</li> -->
-
-
-	<!-- 댓글 -->
-	
 
 	
-
-	<c:if test="${empty reply}">
-	<p>※ 댓글이 없습니다.</p>
-	</c:if>
-	</ul>
     <div>
     <form id="replyForm" name="replyForm" method="post" action="replyWrite.do">
-    <c:forEach items="${reply}" var="ReplyVo">
-	
-		<div>
-		<div id="textbold"><p>ID : ${ReplyVo.writer} </p></div>
-		<c:if test="${ReplyVo.writer == sessionScope.userId }">
-		<button id="replydelete" type="button" class="btn btn-sm btn-primary" name="replydelete" style="float: right" onclick="replyDelete('${ReplyVo.replyNo}')" >댓글 삭제</button>
+    
+	    <c:if test="${empty reply}">
+		<p>※ 댓글이 없습니다.</p>
 		</c:if>
-		<p>${ReplyVo.content}</p>
-		<p>  ${ReplyVo.regDate}</p>
-		</div>
 	
-	</c:forEach>
+	    <c:forEach items="${reply}" var="ReplyVo">
+			<div>
+			<div id="textbold"><p>ID : ${ReplyVo.writer} </p></div>
+			
+			<c:if test="${ReplyVo.writer == sessionScope.userId }">
+			<button id="replydelete" type="button" class="btn btn-sm btn-primary" name="replydelete" style="float: right" onclick="replyDelete('${ReplyVo.replyNo}')" >댓글 삭제</button>
+			</c:if>
+			
+			<p>${ReplyVo.content}</p>
+			<p>  ${ReplyVo.regDate}</p>
+			</div>
+		</c:forEach>
+	
     	<input type="hidden" id="replyNo" name="replyNo" value="${ReplyVo.replyNo}"> 
         <p>
             <label>댓글 작성자</label> <input type="text" value="${sessionScope.userId }" name="writer" id="writer" readonly> 
@@ -148,6 +156,7 @@
         <input type="hidden" name="testId" value="${vo.testId}">
             <button id="btnsubmit" type="button" name="btnsubmit" class="btn btn-sm btn-primary">댓글 작성</button>
         </p>
+        
     </form>
     
 	</div>
@@ -230,6 +239,12 @@
     
   	
     $(document).ready(function() {
+    	
+    	var userId = '<%=(String)session.getAttribute("userId")%>';
+    	if(userId=="null"){
+    		alert("로그인이 필요한 항목입니다. 로그인을 해주세요.");
+    		location.href="testList.do";
+    	} 
     	
 		//댓글등록클릭
     	$("#btnsubmit").on("click",function() {

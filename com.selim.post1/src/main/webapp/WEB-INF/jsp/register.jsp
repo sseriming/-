@@ -69,13 +69,11 @@
                 <div class="form-group" id="divId">
                     <label for="userId" class="col-lg-2 control-label">아이디</label>
                     <div class="col-lg-10">
-                        <input type="text" class="id_input" id="userId" name="userId" data-rule-required="true" placeholder="30자이내의 알파벳, 언더스코어(_), 숫자만 입력 가능합니다." maxlength="30">
-<!--                       	<div> -->
-<!-- 							<button type="button" id="idDupChkBtn" class="btn btn-primary" onclick="joinMbrInput.duplicateChkFn()">아이디 중복 확인</button> -->
-<!-- 						</div> -->							
+                        <input type="text" class="id_input form-control" id="userId" name="userId" data-rule-required="true" placeholder="30자이내의 알파벳, 언더스코어(_), 숫자만 입력 가능합니다." maxlength="30">
+							<span class="id_input_re_1">사용 가능한 아이디입니다.</span>
+							<span class="id_input_re_2">아이디가 이미 존재합니다.</span>						
                     </div>
-                    <span class="id_input_re_1">  사용 가능한 아이디입니다.</span>
-					<span class="id_input_re_2">  아이디가 이미 존재합니다.</span>
+                    
 
                 </div>
                 <div class="form-group" id="divPassword">
@@ -113,65 +111,9 @@
         
         <script type = "text/javascript">
                
-//         var joinMbrInput  = {
-//         		// 아이디 중복확인 체크
-//         	    duplicateChkFn	: function() {
-//         	    	var userId = $("#userId").val();
-//         	    	var submitObj=new Object();
-//         	    	submitObj.userId=userId;
-//         	        // 아이디 유효성 검사
-//         	        if (!this.idValidChkFn(userId)) {
-        	        			
-//         	        	return false;
-//         	        }       	        
-//             	        // 아이디 중복 체크
-//             	        $.ajax({
-//             	        	type	:	"post",
-//             	        	url	:	"<c:url value='/selectDupIdChk.do' />",
-//             	        	data	:	{"userId" : userId}, 	
-//             	        	async	:	false,		// 동기처리
-            	        	
-            	        	
-//             	       		success	: function(result) {
-//             	       			var dupCnt = parseInt(result);
-            	       					
-//             	       			if (dupCnt > 0) {
-//             	       				alert(userId + "은/는 사용하실 수 없습니다.");
-//             	       				$("#divInputId").addClass("has-error")
-//             	       		        $("#divInputId").removeClass("has-success")
-//             	       		        $("#userId").focus();
-//             	       			} else {
-//             	       				alert(userId + "은/는 사용가능 합니다.");
-//             	       				$("#divInputId").addClass("has-success")
-//             	       		        $("#divInputId").removeClass("has-error")
-//             	       		        $("#userpw").focus();
-//             	       			}
-//             	       		}
-
-//             	        })
-        	        
-
-//         	    },	
-        	    
-
-        	    // 아이디 유효성 체크
-//         	    idValidChkFn	: function(userId) {   		
-//         			var reg =/^[a-z0-9_-]{2,10}$/ 
-        				
-//         			if (!reg.test(userId))	{
-//         				alert("아이디가 유효하지 않습니다");
-        	            
-//         				return false;
-//         			}
-        				
-//         			return true;	
-//         	    }
-//         	}
-			        
 			//아이디 중복검사
 			$('.id_input').on("propertychange change keyup paste input", function(){
 			
-// 				console.log("keyup 테스트");	
 				var userId = $('.id_input').val();			// .id_input에 입력되는 값
 				var data = {userId : userId}				// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
 				
@@ -180,9 +122,8 @@
 					url : "/memberIdChk.do",
 					data : data,
 					success : function(result) {
-// 						console.log("성공 여부" + result);
 						if(result != 'fail'){							
-							$('.id_input_re_1').css("display","inline-block");
+							$('.id_input_re_1').css("display","inline-block"); 
 							$('.id_input_re_2').css("display", "none");		
 							
 						} else{

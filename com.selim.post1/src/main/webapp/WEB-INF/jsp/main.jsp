@@ -8,11 +8,19 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <!-- 부가적인 테마 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"> -->
+<!-- Bootstrap CSS -->
+<link 
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+    crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
 <title>LOGIN PAGE</title>
+
 <script
 	src="https://code.jquery.com/jquery-3.4.1.js"
 	integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
@@ -90,9 +98,9 @@
 
 			<tr>
 				<td colspan="2" align="center" >
-					<button type="button" id="btnLogin" class="btnLogin" >로그인</button> 
-					<button type="button" id="btnregister" class="btnRegister" >회원가입</button>
-					<button type="button" id="boardList" class="boardList" >게시판 이동</button>
+					<button type="button" id="btnLogin" class="btn btn-sm btn-primary" >로그인</button> 
+					<button type="button" id="btnregister" class="btn btn-sm btn-primary" >회원가입</button>
+					<button type="button" id="boardList" class="btn btn-sm btn-primary" >게시판 이동</button>
 				</td>
 			</tr>
 			

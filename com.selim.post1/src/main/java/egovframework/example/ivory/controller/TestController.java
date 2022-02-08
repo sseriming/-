@@ -92,7 +92,6 @@ public class TestController {
 			// 2.로직
 			int result = testService.insertTest(testVo);
 			if (result == 1) {
-				
 				if(!file.isEmpty()) {
 						//서버에 파일 저장 
 						fileVo.setTestId(testId);

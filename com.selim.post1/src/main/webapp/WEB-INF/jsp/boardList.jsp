@@ -100,7 +100,7 @@ a {
         <hr />
 
     	<c:if test="${sessionScope.userId !=null }">
-    		<a class="btn btn-outline-info" style="float: right" href="testRegister.do">글쓰기</a>
+    		<a class="btn btn-sm btn-primary" style="float: right" href="testRegister.do">글쓰기</a>
     	</c:if>
  
         <!-- search start -->
@@ -119,7 +119,8 @@ a {
             </div>
  
             <div>
-                <button class="btn btn-sm btn-primary" name="btnSearch" id="btnSearch">검색</button>
+                <button class="btn btn-sm btn-primary"  name="btnSearch" id="btnSearch">검색</button>
+<!--                 <button class="btn btn-sm btn-primary" name="btnlist" id="btnSearch">목록으로</button> -->
             </div>
  
         </div>
@@ -186,9 +187,11 @@ a {
             url += "&keyword=" + keyword;
             location.href = url;
         }
-        
+    
+    
     // 검색
     $(document).on('click', '#btnSearch', function(e){
+   
         e.preventDefault();
         var url = "/testList.do";
         url += "?searchType=" + $('#searchType').val();
@@ -197,6 +200,7 @@ a {
         console.log(url);
  
     });   
+    
     
     
     // logout

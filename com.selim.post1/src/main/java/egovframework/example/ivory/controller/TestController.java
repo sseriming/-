@@ -291,7 +291,7 @@ public class TestController {
 	public String deleteFile(HttpServletRequest request, @ModelAttribute("fileVo") testFileUploadVo fileVo)
 			throws Exception {
 
-		testService.deleteFile(fileVo.getFileNo());
+		testService.deleteFile(fileVo.getTestId());
 		return "redirect:/testDetail.do?testId=" + fileVo.getTestId();
 
 	}

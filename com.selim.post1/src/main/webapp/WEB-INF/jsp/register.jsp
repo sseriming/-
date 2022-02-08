@@ -116,7 +116,6 @@
 			
 				var userId = $('.id_input').val();			// .id_input에 입력되는 값
 				var data = {userId : userId}				// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
-				
 				$.ajax({
 					type : "POST",
 					url : "/memberIdChk.do",
@@ -131,8 +130,7 @@
 							$('.id_input_re_1').css("display", "none");				
 						}
 					}
-					
-	}); // ajax 종료
+				}); // ajax 종료
 			
 			});// function 종료
         

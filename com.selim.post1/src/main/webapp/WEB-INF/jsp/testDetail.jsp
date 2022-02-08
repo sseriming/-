@@ -135,16 +135,14 @@
 	    <c:forEach items="${reply}" var="ReplyVo">
 			<div>
 			<div id="textbold"><p>ID : ${ReplyVo.writer} </p></div>
-			
 			<c:if test="${ReplyVo.writer == sessionScope.userId }">
-			<button id="replydelete" type="button" class="btn btn-sm btn-primary" name="replydelete" style="float: right" onclick="replyDelete('${ReplyVo.replyNo}')" >댓글 삭제</button>
+			<button id="replydelete" type="button" class="btn btn-sm btn-primary" 
+			name="replydelete" style="float: right" onclick="replyDelete('${ReplyVo.replyNo}')" >댓글 삭제</button>
 			</c:if>
-			
 			<p>${ReplyVo.content}</p>
-			<p>  ${ReplyVo.regDate}</p>
+			<p>${ReplyVo.regDate}</p>
 			</div>
 		</c:forEach>
-	
     	<input type="hidden" id="replyNo" name="replyNo" value="${ReplyVo.replyNo}"> 
         <p>
             <label>댓글 작성자</label> <input type="text" value="${sessionScope.userId }" name="writer" id="writer" readonly> 
@@ -283,13 +281,6 @@
     	        }
     	    });
 		
-		
-	    //댓글 삭제 버튼
-// 	     $(document).on('click', '#replydelete', function(e) {
-// 	    	 	$("#replyNo").val(replyNo);
-// 				$("#replyForm").attr("action", "replyDelete.do");
-// 				$("#replyForm").submit();
-// 	    	   });
     	    
 	    
     	//이전 클릭 시 testList로 이동

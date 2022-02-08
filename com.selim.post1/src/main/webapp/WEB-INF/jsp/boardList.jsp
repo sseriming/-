@@ -199,7 +199,7 @@ a {
     });   
     
     
-    // 검색
+    // logout
     $(document).on('click', '#btnlogout', function(e){
        
  		location.href="/logout.do";

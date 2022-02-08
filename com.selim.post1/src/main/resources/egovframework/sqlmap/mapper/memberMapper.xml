@@ -8,7 +8,7 @@
 	<insert id="register" parameterType="egovframework.example.ivory.vo.MemberVo">
 		INSERT INTO member( userId,userPw,userEmail,enterDate,userName)
 		VALUES(#{userId},#{userPw},#{userEmail},now(),#{userName})
-	</insert>
+	</insert>		
 
 	<!--아이디확인 -->
 	<select id="idCheck" parameterType="egovframework.example.ivory.vo.MemberVo" resultType="int">

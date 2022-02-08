@@ -76,82 +76,6 @@ public class TestController {
 		return "testRegister";
 	}
 
-//	// 글쓰기
-//	@RequestMapping(value = "/insertTest.do")
-//	public ModelAndView insertTest(MultipartFile[] file, @ModelAttribute("testVo") TestVo testVo,
-//			@ModelAttribute("MemberVo") MemberVo memberVo, testFileUploadVo fileVo, Model model,
-//			MultipartHttpServletRequest request) throws Exception {
-//		// 1.파라미터 세팅
-//		ModelAndView mv = new ModelAndView();
-//		String uploadFolder = "C:\\upload"; // 파일 저장 경로
-//
-//		String testId = testService.selectTestId(); // testId 키 생성
-//		testVo.setTestId(testId);
-//		
-//		int result2 = 1;
-//
-//		// 2.로직
-//		int result = testService.insertTest(testVo);
-//		if (result == 1) {
-//
-//			fileVo.setTestId(testId);
-//			String fileNo = testService.selectFileNo();
-//			fileVo.setFileNo(fileNo);
-//
-//			Iterator<String> iterator = request.getFileNames();
-//			int fileLoop = 0;
-//			String uploadFileName;
-//			MultipartFile mFile = null;
-//			String orgName = ""; // 원본 파일명
-//			String saveName = ""; // 저장된 파일명
-//
-//			ArrayList<String> list = new ArrayList<String>();
-//			while (iterator.hasNext()) {
-//				fileLoop++;
-//
-//				uploadFileName = iterator.next();
-//				mFile = request.getFile(uploadFileName);
-//
-//				orgName = mFile.getOriginalFilename();
-//
-//				// 수정시 savename명 변환 (yyyymmddhh 방식으로 저장되게 함)
-//				if (orgName != null && orgName.length() != 0) {
-//					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMDDHHmmss-" + fileLoop);
-//					Calendar calendar = Calendar.getInstance();
-//					saveName = simpleDateFormat.format(calendar.getTime());
-//
-//					fileVo.setSaveName(saveName);
-//
-//					try {
-//						mFile.transferTo(new File(uploadFolder + File.separator + saveName));
-//					} catch (Exception e) {
-//						list.add("파일 업로드 중 에러 발생!!!");
-//					}
-//				}
-//				result2 = testService.insertFile(fileVo);
-//			}
-//			if (result2 == 1) {
-//				mv.addObject("msg", "정상적으로 등록되었습니다.1");
-//				mv.addObject("testId", testVo.getTestId());
-//				mv.addObject("url", "/testDetail.do?testId=" + testVo.getTestId());
-//				mv.setViewName("forward:/forward.do");
-//				return mv;
-//			} else {
-//				mv.addObject("msg", "등록실패 다시 시도해주세요(ERR-02)");
-//				mv.addObject("url", "/testRegister.do");
-//				mv.setViewName("forward:/forward.do");
-//				return mv;
-//			}
-//		}
-//
-//		else {
-//			mv.addObject("msg", "등록실패 다시 시도해주세요(ERR-03)");
-//			mv.addObject("url", "/testRegister.do");
-//			mv.setViewName("forward:/forward.do");
-//			return mv;
-//		}
-//	}
-	
 	// 글쓰기
 		@RequestMapping(value = "/insertTest.do")
 		public ModelAndView insertTest(MultipartFile file, @ModelAttribute("testVo") TestVo testVo,
@@ -170,7 +94,7 @@ public class TestController {
 			if (result == 1) {
 				
 				if(!file.isEmpty()) {
-					//서버에 파일 저장 
+						//서버에 파일 저장 
 						fileVo.setTestId(testId);
 						
 						String fileNo = testService.selectFileNo();
@@ -236,14 +160,12 @@ public class TestController {
 		
 		String fileNo = testService.selectFileNo(); //파일키
 		fileVo.setFileNo(fileNo);
-		
 
 		// 2. 로직
 		int result = testService.updateTest(testVo);
 		if (result == 1) {
 			if(!file.isEmpty()) {
 				//서버에 파일 저장 
-				
 				String saveName = file.getOriginalFilename();
 				saveName = saveName.substring(saveName.lastIndexOf("\\") + 1);
 

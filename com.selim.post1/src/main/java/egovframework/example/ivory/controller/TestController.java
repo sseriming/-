@@ -187,13 +187,23 @@ public class TestController {
 					mv.setViewName("forward:/forward.do");
 					return mv;
 				} else {
-					mv.addObject("msg", "오류가 발생했습니다.ERR-01");
-					mv.addObject("url", "testList.do");
-					mv.setViewName("forward:/forward.do");
-					return mv;
+					int result3=testService.insertFile(fileVo);
+					if(result3==1) {
+						mv.addObject("msg", "정상적으로 수정 되었습니다.2");
+						mv.addObject("testId", testVo.getTestId());
+						mv.addObject("url", "testDetail.do?testId=" + testVo.getTestId());
+						mv.setViewName("forward:/forward.do");
+						return mv;
+					}
+					else {
+						mv.addObject("msg", "오류가 발생했습니다.ERR-01");
+						mv.addObject("url", "testList.do");
+						mv.setViewName("forward:/forward.do");
+						return mv;
+					}
 				}
 			}else {
-				mv.addObject("msg", "정상적으로 수정 되었습니다.2");
+				mv.addObject("msg", "정상적으로 수정 되었습니다.3");
 				mv.addObject("testId", testVo.getTestId());
 				mv.addObject("url", "testDetail.do?testId=" + testVo.getTestId());
 				mv.setViewName("forward:/forward.do");

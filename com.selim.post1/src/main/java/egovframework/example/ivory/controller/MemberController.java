@@ -1,7 +1,5 @@
 package egovframework.example.ivory.controller;
  
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
-import egovframework.example.ivory.dao.UserRepository;
 import egovframework.example.ivory.service.MemberService;
 import egovframework.example.ivory.vo.MemberVo;
 
@@ -27,8 +23,6 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-	@Autowired
-	private UserRepository userRepository;
 	
 	//로그인 처리
 	@RequestMapping(value = "/loginCheck.do", method = RequestMethod.POST)
@@ -68,21 +62,15 @@ public class MemberController {
 	//회원가입 get
 	@RequestMapping(value = "/register.do", method = RequestMethod.GET)
 	public void getRegister(HttpSession session) throws Exception { 
-		System.out.println("session id: "+session.getId());
 	}
 	
 	//회원가입 post
 	@RequestMapping(value = "/register.do", method = RequestMethod.POST)
-	public String postRegister(MemberVo memberVo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String postRegister(MemberVo memberVo) throws Exception {
 		
-		//세션
-		HttpSession session = request.getSession();
-		//세션처리를 위해 userId get
-		String userId= memberVo.getUserId();
-		
+
 		//로직
 		service.register(memberVo);
-		session.setAttribute("userSession", userId);
 		
 		return "main";
 	}

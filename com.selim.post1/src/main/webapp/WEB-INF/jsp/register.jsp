@@ -121,7 +121,7 @@
 					url : "/memberIdChk.do",
 					data : data,
 					success : function(result) {
-						if(result != 'fail'){							
+						if(result == 'success'){							
 							$('.id_input_re_1').css("display","inline-block"); 
 							$('.id_input_re_2').css("display", "none");		
 							

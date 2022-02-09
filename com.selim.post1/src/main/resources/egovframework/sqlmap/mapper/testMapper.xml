@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="egovframework.example.ivory.service.TestMapper">
-	<!-- 게시글 id 생성 -->
+	<!-- testId key 생성 -->
     <select id="selectTestId" resultType="java.lang.String">
     SELECT IFNULL(MAX(testId),0)+1 FROM test
     </select>
@@ -89,7 +89,9 @@
 	<!-- 첨부파일수정 -->
 	<update id="updateFile" parameterType="egovframework.example.ivory.vo.testFileUploadVo">
 		UPDATE tb_file SET
-		orgName = #{orgName}
+		orgName = #{orgName},
+		saveName=#{saveName},
+		fileSize=#{fileSize}
 		WHERE testId= #{testId}
 	</update>
 	

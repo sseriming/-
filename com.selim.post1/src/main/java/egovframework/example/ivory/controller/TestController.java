@@ -100,6 +100,9 @@ public class TestController {
 						fileVo.setFileNo(fileNo);
 						
 						String saveName = file.getOriginalFilename();
+						String orgName = file.getOriginalFilename();
+						
+						orgName = orgName.substring(orgName.lastIndexOf("\\") + 1);
 						saveName = saveName.substring(saveName.lastIndexOf("\\") + 1);
 
 						UUID uuid = UUID.randomUUID();
@@ -156,10 +159,9 @@ public class TestController {
 		// 1. 파라미터 세팅
 		ModelAndView mv = new ModelAndView();
 		String uploadFolder = "C:\\upload";
-		
 		String fileNo = testService.selectFileNo(); //파일키
 		fileVo.setFileNo(fileNo);
-
+		
 		// 2. 로직
 		int result = testService.updateTest(testVo);
 		if (result == 1) {
@@ -167,7 +169,6 @@ public class TestController {
 				//서버에 파일 저장 
 				String saveName = file.getOriginalFilename();
 				saveName = saveName.substring(saveName.lastIndexOf("\\") + 1);
-
 				UUID uuid = UUID.randomUUID();
 				saveName = uuid.toString();
 
@@ -178,7 +179,7 @@ public class TestController {
 				} catch (Exception e) {
 					mv.addObject("msg", "파일이 저장되지 않았습니다. 다시 시도해주세요.");
 				}
-				int result2 = testService.insertFile(fileVo);
+				int result2 = testService.updateFile(fileVo);
 				if (result2 == 1) {
 					mv.addObject("msg", "정상적으로 수정되었습니다.1");
 					mv.addObject("testId", testVo.getTestId());

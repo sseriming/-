@@ -7,6 +7,7 @@ public class TestVo {
     private String testContent;
     private String testName;
     private String testDate;
+    private String rowNumber;
 
 
 
@@ -41,11 +42,18 @@ public class TestVo {
     public void setTestDate(String testDate) {
         this.testDate = testDate;
     }
-  	
+	public String getRowNumber() {
+		return rowNumber;
+	}
+	public void setRowNumber(String rowNumber) {
+		this.rowNumber = rowNumber;
+	}
+	
 	@Override
 	public String toString() {
-		return "TestVo [testId="+testId+", testTitle="+testTitle+",testContent="+testContent+",testName="+testName+",testDate="+testDate+"]";
+		return "TestVo [testId="+testId+", rowNumber="+rowNumber+", testTitle="+testTitle+",testContent="+testContent+",testName="+testName+",testDate="+testDate+"]";
 	}
+
 }
 
 

@@ -126,13 +126,13 @@ public class Pagination {
         //전체 페이지 개수 math.ceil() 함수는 주어진 숫자보다 크거나 같은 숫자중 가장 작은 숫자를 integer로 반환
         this.pageCnt = (int) Math.ceil(listCnt/(double)listSize);
         
-        //시작페이지
+        //각 페이지 범위의 시작 번호를 구하는 방법
         this.startPage = (range - 1) * rangeSize + 1;
         
-        //끝페이지
+        //각 페이지 범위의 마지막 번호를 구하는 방법
         this.endPage = range * rangeSize;
         
-        //게시판 시작 번호
+        //게시판 시작 번호를 따로 구하는 이유는 다음 버튼의 활성화여부를 판단하기 위함
         this.startList = (page - 1) * listSize;
         
         //이전 버튼 상태

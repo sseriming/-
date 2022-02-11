@@ -95,7 +95,12 @@ public class TestDaoImpl implements TestDao {
 	public testFileUploadVo fileDownload(testFileUploadVo fileVo) throws Exception {
 		TestMapper mapper = sqlSession.getMapper(TestMapper.class);
 		return mapper.fileDownload(fileVo);
-//		return sqlSession.selectOne("TestMa pper.fileDownload",fileNo);
+	}
+
+	@Override
+	public String selectRowNum() {
+		TestMapper mapper = sqlSession.getMapper(TestMapper.class);
+		return mapper.selectRowNum();
 	}
 
 	

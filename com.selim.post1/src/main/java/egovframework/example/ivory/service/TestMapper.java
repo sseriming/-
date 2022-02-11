@@ -42,6 +42,8 @@ public interface TestMapper {
 
 	public String selectFileNo();
 
+	public String selectRowNum();
+	
 	public testFileUploadVo fileDownload(testFileUploadVo fileVo);
 
 

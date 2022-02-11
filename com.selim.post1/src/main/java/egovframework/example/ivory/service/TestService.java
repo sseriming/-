@@ -32,9 +32,12 @@ public interface TestService {
 
 	public String selectFileNo();
 	
+	public String selectRowNum();
 
 	
 	public testFileUploadVo fileDownload(testFileUploadVo fileVo) throws Exception;
+
+//	int insertTest(TestVo testVo, testFileUploadVo fileVo) throws Exception;
 	 
 	
 

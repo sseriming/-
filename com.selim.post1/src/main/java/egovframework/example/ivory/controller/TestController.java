@@ -56,6 +56,7 @@ public class TestController {
 			@RequestParam String testId) throws Exception {
 
 		testVo.setTestId(testId);
+//		testVo.setRowNumber(rowNumber);
 
 		testVo = testService.selectDetail(testId);
 		model.addAttribute("vo", testVo);
@@ -83,72 +84,89 @@ public class TestController {
 
 			// 1.파라미터 세팅
 			ModelAndView mv = new ModelAndView();
-			String uploadFolder = "C:\\upload";
-
+			String uploadFolder = "C:\\upload"; //폴더 경로
+			
+			
 			String testId = testService.selectTestId(); // 키 생성
 			testVo.setTestId(testId);
 			
-
+//			String rowNumber = testService.selectRowNum(); 
+//			testVo.setTestId(rowNumber);
+			
 			// 2.로직
-			int result = testService.insertTest(testVo);
-			if (result == 1) {
-				if(!file.isEmpty()) {
-						//서버에 파일 저장 
-						fileVo.setTestId(testId);
-						
-						String fileNo = testService.selectFileNo();
-						fileVo.setFileNo(fileNo);
-						
-						String saveName = file.getOriginalFilename();
-						String orgName = file.getOriginalFilename();
-						
-						orgName = orgName.substring(orgName.lastIndexOf("\\") + 1);
-						saveName = saveName.substring(saveName.lastIndexOf("\\") + 1);
+						int result = testService.insertTest(testVo);
+						if (result == 1) {
+							if(!file.isEmpty()) {
+								//서버에 파일 저장 
+								File Folder = new File(uploadFolder);
+								//해당 디렉토리가 없을 경우 디렉토리 생성
+								if(!Folder.exists()) {
+									try {
+										Folder.mkdir();//폴더 생성
+										System.out.println("폴더 생성");
+									} 
+									catch(Exception e) {
+										e.getStackTrace();
+									}
+								}
+									fileVo.setTestId(testId);
+									
+									String fileNo = testService.selectFileNo();
+									fileVo.setFileNo(fileNo);
+									
+									String saveName = file.getOriginalFilename();
+									String orgName = file.getOriginalFilename();
+									
+									orgName = orgName.substring(orgName.lastIndexOf("\\") + 1);
+									saveName = saveName.substring(saveName.lastIndexOf("\\") + 1);
 
-						UUID uuid = UUID.randomUUID();
-						saveName = uuid.toString();
+									UUID uuid = UUID.randomUUID();
+									saveName = uuid.toString();
 
-						File saveFile = new File(uploadFolder, saveName);
-						fileVo.setSaveName(saveName);
-						try {
-							file.transferTo(saveFile);
-						} catch (Exception e) {
-							mv.addObject("msg", "파일이 저장되지 않았습니다. 다시 시도해주세요.");
+									File saveFile = new File(uploadFolder, saveName);
+									fileVo.setSaveName(saveName);
+									try {
+										file.transferTo(saveFile);
+									} catch (Exception e) {
+										mv.addObject("msg", "파일이 저장되지 않았습니다. 다시 시도해주세요.");
+									}
+								
+								int result2 = testService.insertFile(fileVo);
+								if (result2 == 1) {
+									mv.addObject("msg", "정상적으로 등록되었습니다.1");
+									mv.addObject("testId", testVo.getTestId());
+									mv.addObject("url", "/testDetail.do?testId=" + testVo.getTestId());
+									mv.setViewName("forward:/forward.do");
+									return mv;
+
+								}	 else {
+									mv.addObject("msg", "첨부파일에 문제가 있습니다.");
+									mv.addObject("url", "/testRegister.do");
+									mv.setViewName("forward:/forward.do");
+									return mv;
+								}
+						
+							} else {
+								mv.addObject("msg", "정상적으로 등록되었습니다.2");
+								mv.addObject("testId", testVo.getTestId());
+								mv.addObject("url", "/testDetail.do?testId=" + testVo.getTestId());
+								mv.setViewName("forward:/forward.do");
+								return mv;
+							}
+							
+						} else {
+							mv.addObject("msg", "정상적으로 등록되지 않았습니다.");
+							mv.addObject("url", "/testRegister.do");
+							mv.setViewName("forward:/forward.do");
+							return mv;
 						}
-					
-					int result2 = testService.insertFile(fileVo);
-					if (result2 == 1) {
-						mv.addObject("msg", "정상적으로 등록되었습니다.1");
-						mv.addObject("testId", testVo.getTestId());
-						mv.addObject("url", "/testDetail.do?testId=" + testVo.getTestId());
-						mv.setViewName("forward:/forward.do");
-						return mv;
 
-					}	 else {
-						mv.addObject("msg", "첨부파일에 문제가 있습니다.");
-						mv.addObject("url", "/testRegister.do");
-						mv.setViewName("forward:/forward.do");
-						return mv;
+						// 3.
+
 					}
 			
-				} else {
-					mv.addObject("msg", "정상적으로 등록되었습니다.2");
-					mv.addObject("testId", testVo.getTestId());
-					mv.addObject("url", "/testDetail.do?testId=" + testVo.getTestId());
-					mv.setViewName("forward:/forward.do");
-					return mv;
-				}
-				
-			} else {
-				mv.addObject("msg", "정상적으로 등록되지 않았습니다.");
-				mv.addObject("url", "/testRegister.do");
-				mv.setViewName("forward:/forward.do");
-				return mv;
-			}
-
-			// 3.
-
-		}
+			
+			
 	
 
 	// 글수정
@@ -159,8 +177,21 @@ public class TestController {
 		// 1. 파라미터 세팅
 		ModelAndView mv = new ModelAndView();
 		String uploadFolder = "C:\\upload";
+		File Folder = new File(uploadFolder);
+		//해당 디렉토리가 없을 경우 디렉토리 생성
+		if(!Folder.exists()) {
+			try {
+				Folder.mkdir();//폴더 생성
+				System.out.println("폴더 생성");
+			} 
+			catch(Exception e) {
+				e.getStackTrace();
+			}
+		}
+		
 		String fileNo = testService.selectFileNo(); //파일키
 		fileVo.setFileNo(fileNo);
+		
 		
 		// 2. 로직
 		int result = testService.updateTest(testVo);
@@ -254,6 +285,7 @@ public class TestController {
 	}
 
 	// 글목록페이지,페이징,검색
+	//검색 조건을 받기위해 파라미터 세팅
 	@RequestMapping(value = "/testList.do")
 	public String testListDo(Model model, @RequestParam(required = false, defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "1") int range,
@@ -264,9 +296,11 @@ public class TestController {
 		search.setSearchType(searchType);
 		search.setKeyword(keyword);
 
-		// 전체 개시글 개수
+		// 전체 개시글 개수를 얻어와 listcnt에 저장
+		//service에 pagination대신 search를 인자로 보냄.
 		int listCnt = testService.getBoardListCnt(search);
 		// 검색 후 페이지
+		// view에서 전달받은 파마리터(현재 페이지정보, 페이지 범위)와 전체 게시글의 개수를 가지고 페이지 정보를 셋팅
 		search.pageInfo(page, range, listCnt);
 		// 페이징
 		model.addAttribute("pagination", search);
@@ -287,6 +321,7 @@ public class TestController {
 		String orgName = fileVo2.getOrgName();
 		String saveName = fileVo2.getSaveName();
 
+		//
 		orgName = orgName.substring(orgName.lastIndexOf("\\") + 1);
 		String encordedFilename = URLEncoder.encode(orgName, "UTF-8").replace("+", "%20");
 		// 파일명 지정

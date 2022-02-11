@@ -12,13 +12,14 @@
 
 	<!--아이디확인 -->
 	<select id="idCheck" parameterType="egovframework.example.ivory.vo.MemberVo" resultType="int">
-		SELECT COUNT(*) FROM member
-		WHERE
-			userId=#{userId}
+		SELECT COUNT(*) 
+		FROM member
+		WHERE userId=#{userId}
 	</select>
 
 	<select id="login" parameterType="egovframework.example.ivory.vo.LoginDto" resultType="int">
-		SELECT COUNT(*) FROM member
+		SELECT COUNT(*) 
+		FROM member
 		WHERE userId=#{userId}
 	</select>
 
@@ -30,15 +31,9 @@
 	</select>
 	
 	<select id = "viewMember" resultType="egovframework.example.ivory.vo.MemberVo">
-		SELECT
-		userId AS userId,
-		userPw AS userPw,
-		userEmail AS userEmail,
-		enterDate AS enterDate,
-		userName As userName
+		SELECT userId AS userId, userPw AS userPw, userEmail AS userEmail, enterDate AS enterDate, userName As userName
 		FROM member
-		WHERE userId = #{userId}
-		   AND userPw= #{userPw}   
+		WHERE userId = #{userId} AND userPw= #{userPw}   
 	</select>
 
 </mapper>

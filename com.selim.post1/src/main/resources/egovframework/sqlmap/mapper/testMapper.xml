@@ -15,7 +15,7 @@
 	</select>
 	
 	<select id="selectRowNum" resultType="java.lang.String">
-	SELECT @rowNum := @rowNum +1 AS rowNum, T.*
+	SELECT @rowNum := rowNum +1 AS rowNum, T.*
 	FROM test T, (SELECT @rowNum :=0) TMP
 	WHERE showTest like 'Y'
 	ORDER BY testDate ASC
@@ -34,13 +34,13 @@
 		  FROM test 
         <where>
             <if test="searchType=='testTitle' and keyword != null and keyword !=''">
-                AND showTest='Y' AND testTitle like CONCAT('%',#{keyword},'%')
+                AND testTitle like CONCAT('%',#{keyword},'%')
             </if>
             <if test="searchType=='testContent' and keyword != null and keyword !=''">
-                AND showTest='Y' AND testContent like CONCAT('%',#{keyword},'%')
+                AND testContent like CONCAT('%',#{keyword},'%')
             </if>
             <if test="searchType=='testName' and keyword != null and keyword !=''">
-                AND showTest='Y' AND testName like CONCAT('%',#{keyword},'%')
+                AND testName like CONCAT('%',#{keyword},'%')
             </if>
             AND showTest='Y'
         </where>
@@ -60,13 +60,13 @@
         	showTest='Y'
             <if test="keyword != null and keyword != ''">
                 <if test="searchType=='testTitle'">
-                    AND showTest='Y' AND testTitle like CONCAT('%',#{keyword},'%')
+                    AND testTitle like CONCAT('%',#{keyword},'%')
                 </if>
                 <if test="searchType=='testContent'">
-                    AND showTest='Y' AND testContent like CONCAT('%',#{keyword},'%')
+                    AND testContent like CONCAT('%',#{keyword},'%')
                 </if>
                 <if test="searchType=='testName'">
-                    AND showTest='Y' AND testName like CONCAT('%',#{keyword},'%')
+                    AND testName like CONCAT('%',#{keyword},'%')
                 </if>
             </if>
         </where>

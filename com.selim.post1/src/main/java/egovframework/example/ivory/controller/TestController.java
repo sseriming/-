@@ -4,17 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,9 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import egovframework.example.ivory.dao.TestDao;
 import egovframework.example.ivory.service.ReplyService;
 import egovframework.example.ivory.service.TestService;
-import egovframework.example.ivory.vo.MemberVo;
 import egovframework.example.ivory.vo.ReplyVo;
 import egovframework.example.ivory.vo.Search;
 import egovframework.example.ivory.vo.TestVo;
@@ -52,21 +47,27 @@ public class TestController {
 
 	// 글 상세페이지
 	@RequestMapping(value = "/testDetail.do")
-	public String viewForm(@ModelAttribute("testVo") TestVo testVo, Model model, HttpServletRequest request,
+	public String viewForm(@ModelAttribute("testVo") TestVo testVo,@ModelAttribute("testFileUploadVo") testFileUploadVo fileVo, Model model, HttpServletRequest request,
 			@RequestParam String testId) throws Exception {
 
-		testVo.setTestId(testId);
-//		testVo.setRowNumber(rowNumber);
+		try {
+			testVo.setTestId(testId);
 
-		testVo = testService.selectDetail(testId);
-		model.addAttribute("vo", testVo);
+			testVo = testService.selectDetail(testId);
+			model.addAttribute("vo", testVo);
 
-		testFileUploadVo fileVo = testService.fileDetail(testVo.getTestId());
-		model.addAttribute("file", fileVo);
+			fileVo.setTestId(testId);
+			fileVo = testService.fileDetail(testId);
+			model.addAttribute("file", fileVo);
 
-		List<ReplyVo> replyList = replyService.replyList(testId);
-		model.addAttribute("reply", replyList);
-
+			List<ReplyVo> replyList = replyService.replyList(testId);
+			model.addAttribute("reply", replyList);
+			
+	
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		return "testDetail";
 
 	}
@@ -84,204 +85,103 @@ public class TestController {
 
 			// 1.파라미터 세팅
 			ModelAndView mv = new ModelAndView();
-			String uploadFolder = "C:\\upload"; //폴더 경로
-			
-			
-			String testId = testService.selectTestId(); // 키 생성
-			testVo.setTestId(testId);
-			
-//			String rowNumber = testService.selectRowNum(); 
-//			testVo.setTestId(rowNumber);
 			
 			// 2.로직
-						int result = testService.insertTest(testVo);
-						if (result == 1) {
-							if(!file.isEmpty()) {
-								//서버에 파일 저장 
-								File Folder = new File(uploadFolder);
-								//해당 디렉토리가 없을 경우 디렉토리 생성
-								if(!Folder.exists()) {
-									try {
-										Folder.mkdir();//폴더 생성
-										System.out.println("폴더 생성");
-									} 
-									catch(Exception e) {
-										e.getStackTrace();
-									}
-								}
-									fileVo.setTestId(testId);
-									
-									String fileNo = testService.selectFileNo();
-									fileVo.setFileNo(fileNo);
-									
-									String saveName = file.getOriginalFilename();
-									String orgName = file.getOriginalFilename();
-									
-									orgName = orgName.substring(orgName.lastIndexOf("\\") + 1);
-									saveName = saveName.substring(saveName.lastIndexOf("\\") + 1);
-
-									UUID uuid = UUID.randomUUID();
-									saveName = uuid.toString();
-
-									File saveFile = new File(uploadFolder, saveName);
-									fileVo.setSaveName(saveName);
-									try {
-										file.transferTo(saveFile);
-									} catch (Exception e) {
-										mv.addObject("msg", "파일이 저장되지 않았습니다. 다시 시도해주세요.");
-									}
-								
-								int result2 = testService.insertFile(fileVo);
-								if (result2 == 1) {
-									mv.addObject("msg", "정상적으로 등록되었습니다.1");
-									mv.addObject("testId", testVo.getTestId());
-									mv.addObject("url", "/testDetail.do?testId=" + testVo.getTestId());
-									mv.setViewName("forward:/forward.do");
-									return mv;
-
-								}	 else {
-									mv.addObject("msg", "첨부파일에 문제가 있습니다.");
-									mv.addObject("url", "/testRegister.do");
-									mv.setViewName("forward:/forward.do");
-									return mv;
-								}
-						
-							} else {
-								mv.addObject("msg", "정상적으로 등록되었습니다.2");
-								mv.addObject("testId", testVo.getTestId());
-								mv.addObject("url", "/testDetail.do?testId=" + testVo.getTestId());
-								mv.setViewName("forward:/forward.do");
-								return mv;
-							}
-							
-						} else {
-							mv.addObject("msg", "정상적으로 등록되지 않았습니다.");
-							mv.addObject("url", "/testRegister.do");
+			try {
+				int result = testService.insertTest(testVo, fileVo, file);
+				if (result == 1) {
+							mv.addObject("msg", "정상적으로 등록되었습니다.");
+							mv.addObject("testId", testVo.getTestId());
+							mv.addObject("url", "/testDetail.do");
 							mv.setViewName("forward:/forward.do");
 							return mv;
-						}
-
-						// 3.
-
-					}
+					} 
+				 else {
+					mv.addObject("msg", "정상적으로 등록되지 않았습니다.");
+					mv.addObject("url", "/testRegister.do");
+					mv.setViewName("forward:/forward.do");
+					return mv;
+				}
+			 }catch(Exception e) {
+				 mv.addObject("msg", "ERROR");
+				 e.printStackTrace();
+				 
+			}
+			return mv;
+		}
 			
 			
-			
-	
-
 	// 글수정
 	@RequestMapping(value = "/updateTest.do")
 	public ModelAndView updateTest(MultipartFile file, @ModelAttribute("testVo") TestVo testVo,
-			@ModelAttribute("testFileUploadVo") testFileUploadVo fileVo, MultipartHttpServletRequest request,
-			Model model) throws Exception {
+			@ModelAttribute("testFileUploadVo") testFileUploadVo fileVo) throws Exception {
 		// 1. 파라미터 세팅
 		ModelAndView mv = new ModelAndView();
-		String uploadFolder = "C:\\upload";
-		File Folder = new File(uploadFolder);
-		//해당 디렉토리가 없을 경우 디렉토리 생성
-		if(!Folder.exists()) {
-			try {
-				Folder.mkdir();//폴더 생성
-				System.out.println("폴더 생성");
-			} 
-			catch(Exception e) {
-				e.getStackTrace();
-			}
-		}
-		
-		String fileNo = testService.selectFileNo(); //파일키
-		fileVo.setFileNo(fileNo);
-		
 		
 		// 2. 로직
-		int result = testService.updateTest(testVo);
-		if (result == 1) {
-			if(!file.isEmpty()) {
-				//서버에 파일 저장 
-				String saveName = file.getOriginalFilename();
-				saveName = saveName.substring(saveName.lastIndexOf("\\") + 1);
-				UUID uuid = UUID.randomUUID();
-				saveName = uuid.toString();
-
-				File saveFile = new File(uploadFolder, saveName);
-				fileVo.setSaveName(saveName);
-				try {
-					file.transferTo(saveFile);
-				} catch (Exception e) {
-					mv.addObject("msg", "파일이 저장되지 않았습니다. 다시 시도해주세요.");
-				}
-				int result2 = testService.updateFile(fileVo);
-				if (result2 == 1) {
-					mv.addObject("msg", "정상적으로 수정되었습니다.1");
-					mv.addObject("testId", testVo.getTestId());
-					mv.addObject("url", "testDetail.do?testId=" + testVo.getTestId());
-					mv.setViewName("forward:/forward.do");
-					return mv;
-				} else {
-					int result3=testService.insertFile(fileVo);
-					if(result3==1) {
-						mv.addObject("msg", "정상적으로 수정 되었습니다.2");
+		try {
+			int result = testService.updateTest(testVo, fileVo, file);
+			if (result == 1) {
+						mv.addObject("msg", "정상적으로 수정되었습니다.");
 						mv.addObject("testId", testVo.getTestId());
-						mv.addObject("url", "testDetail.do?testId=" + testVo.getTestId());
+						mv.addObject("url", "testDetail.do");
 						mv.setViewName("forward:/forward.do");
 						return mv;
-					}
-					else {
-						mv.addObject("msg", "오류가 발생했습니다.ERR-01");
-						mv.addObject("url", "testList.do");
-						mv.setViewName("forward:/forward.do");
-						return mv;
-					}
-				}
-			}else {
-				mv.addObject("msg", "정상적으로 수정 되었습니다.3");
-				mv.addObject("testId", testVo.getTestId());
-				mv.addObject("url", "testDetail.do?testId=" + testVo.getTestId());
+				} 
+			 else {
+				mv.addObject("msg", "정상적으로 수정되지 않았습니다.");
+				mv.addObject("url", "/testList.do");
 				mv.setViewName("forward:/forward.do");
 				return mv;
 			}
-		} else {
-				mv.addObject("msg", "오류가 발생했습니다.ERR-02");
-				mv.addObject("url", "testList.do");
-				mv.setViewName("forward:/forward.do");
-				return mv;
-			}
-		} 
+		 }catch(Exception e) {
+			 mv.addObject("msg", "ERROR");
+			 e.printStackTrace();
+			 
+		}
+		return mv;
+	} 
 	
 
 	// 첨부파일 삭제
 	@RequestMapping(value = "/deleteFile.do", method = RequestMethod.POST)
-	public String deleteFile(HttpServletRequest request, @ModelAttribute("fileVo") testFileUploadVo fileVo)
-			throws Exception {
-
-		testService.deleteFile(fileVo.getTestId());
-		return "redirect:/testDetail.do?testId=" + fileVo.getTestId();
+	public String deleteFile(HttpServletRequest request, @ModelAttribute("fileVo") testFileUploadVo fileVo) throws Exception {
+		try {
+			testService.deleteFile(fileVo.getTestId());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/testDetail.do";	
 
 	}
 
 	// 글삭제
 	@RequestMapping(value = "/deleteTest.do")
-	public ModelAndView deleteTest(HttpServletRequest request, @ModelAttribute("replyVo") ReplyVo replyVo)
-			throws Exception {
+	public ModelAndView deleteTest(HttpServletRequest request, @ModelAttribute("replyVo") ReplyVo replyVo) throws Exception {
 		// 1.파라미터 세팅
 		ModelAndView mv = new ModelAndView();
 		String testId = request.getParameter("testId");
-
+		
 		// 2.로직
-		int result = testService.deleteTest(testId);
-		if (result == 1) {
-			testService.deleteFile(testId);
-			replyService.replyDelete(testId);
-			mv.addObject("msg", "삭제되었습니다.");
-			mv.addObject("url", "/testList.do");
-			mv.setViewName("forward:/forward.do");
-			return mv;
-		} else {
-			mv.addObject("msg", "삭제가 되지 않았습니다. 다시 시도해주세요.");
-			mv.addObject("url", "/testRegister.do");
-			mv.setViewName("forward:/forward.do");
-			return mv;
+		try {
+			int result = testService.deleteTest(testId);
+			if (result == 1) {
+				testService.deleteFile(testId);
+				replyService.replyDelete(testId);
+				mv.addObject("msg", "삭제되었습니다.");
+				mv.addObject("url", "/testList.do");
+				mv.setViewName("forward:/forward.do");
+				return mv;
+			} else {
+				mv.addObject("msg", "삭제가 되지 않았습니다. 다시 시도해주세요.");
+				mv.addObject("url", "/testRegister.do");
+				mv.setViewName("forward:/forward.do");
+				return mv;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return mv;
 	}
 
 	// 글목록페이지,페이징,검색
@@ -291,6 +191,12 @@ public class TestController {
 			@RequestParam(required = false, defaultValue = "1") int range,
 			@RequestParam(required = false, defaultValue = "testTitle") String searchType,
 			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search) throws Exception {
+		
+//		String testId = testDao.selectTestId(); // 키 생성
+//		testVo.setTestId(testId);
+//		String rowNum = testService.selectRowNum();
+//		testVo.setRowNum(rowNum);
+		
 		// 검색
 		model.addAttribute("search", search);
 		search.setSearchType(searchType);
@@ -315,28 +221,30 @@ public class TestController {
 	public void fileDown(testFileUploadVo fileVo, HttpServletResponse response) throws Exception {
 		// 파라미터 세팅
 		testFileUploadVo fileVo2 = new testFileUploadVo();
+		try {
+			fileVo2 = testService.fileDownload(fileVo);
 
-		fileVo2 = testService.fileDownload(fileVo);
-
-		String orgName = fileVo2.getOrgName();
-		String saveName = fileVo2.getSaveName();
-
-		//
-		orgName = orgName.substring(orgName.lastIndexOf("\\") + 1);
-		String encordedFilename = URLEncoder.encode(orgName, "UTF-8").replace("+", "%20");
-		// 파일명 지정
-		response.setHeader("Content-Disposition",
-				"attachment;filename=" + encordedFilename + ";filename*= UTF-8''" + encordedFilename);
-		OutputStream os = response.getOutputStream();
-		String path = "C:\\upload";
-		FileInputStream fis = new FileInputStream(path + File.separator + saveName);
-		int n = 0;
-		byte[] b = new byte[512];
-		while ((n = fis.read(b)) != -1) {
-			os.write(b, 0, n);
+			String orgName = fileVo2.getOrgName();
+			String saveName = fileVo2.getSaveName();
+			orgName = orgName.substring(orgName.lastIndexOf("\\") + 1);
+			String encordedFilename = URLEncoder.encode(orgName, "UTF-8").replace("+", "%20");
+			// 파일명 지정
+			response.setHeader("Content-Disposition",
+					"attachment;filename=" + encordedFilename + ";filename*= UTF-8''" + encordedFilename);
+			OutputStream os = response.getOutputStream();
+			String path = "C:\\upload";
+			FileInputStream fis = new FileInputStream(path + File.separator + saveName);
+			int n = 0;
+			byte[] b = new byte[512];
+			while ((n = fis.read(b)) != -1) {
+				os.write(b, 0, n);
+			}
+			fis.close();
+			os.close();
+	
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
-		fis.close();
-		os.close();
 	}
 
 	// 댓글작성
@@ -347,22 +255,27 @@ public class TestController {
 
 		String replyNo = replyService.selectReplyNo(); // 댓글 키 생성
 		replyVo.setReplyNo(replyNo);
-
-		// 2.로직
-		int result = replyService.replyWrite(replyVo);
-		if (result == 1) {
-			mv.addObject("testId", replyVo.getTestId());
-			mv.addObject("url", "/testDetail.do");
-			mv.setViewName("forward:/forward.do");
-			return mv;
-		} else {
-			mv.addObject("msg", "오류가 발생했습니다. 다시 시도해주세요.");
-			mv.addObject("testId", replyVo.getTestId());
-			mv.addObject("url", "testDetail.do");
-			mv.setViewName("forward:/forward.do");
-			return mv;
+		try {
+			// 2.로직
+			int result = replyService.replyWrite(replyVo);
+			if (result == 1) {
+				mv.addObject("testId", replyVo.getTestId());
+				mv.addObject("url", "/testDetail.do");
+				mv.setViewName("forward:/forward.do");
+				return mv;
+			} else {
+				mv.addObject("msg", "오류가 발생했습니다. 다시 시도해주세요.");
+				mv.addObject("testId", replyVo.getTestId());
+				mv.addObject("url", "testDetail.do");
+				mv.setViewName("forward:/forward.do");
+				return mv;
+			}
+	
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-
+		
 	}
 
 	// 댓글삭제
@@ -371,24 +284,27 @@ public class TestController {
 			throws Exception {
 
 		ModelAndView mv = new ModelAndView();
+		try {
+			int result = replyService.replyDelete(replyVo.getReplyNo());
+			if (result == 1) {
+				mv.addObject("url", "testDetail.do");
+				mv.setViewName("forward:/forward.do");
+				return mv;
 
-		int result = replyService.replyDelete(replyVo.getReplyNo());
-		if (result == 1) {
-			mv.addObject("url", "testDetail.do");
-			mv.setViewName("forward:/forward.do");
-			return mv;
-
-		} else {
-			mv.addObject("msg", "삭제가 되지 않았습니다. 다시 시도해주세요.");
-			mv.addObject("url", "testList.do");
-			mv.setViewName("forward:/forward.do");
-			return mv;
+			} else {
+				mv.addObject("msg", "삭제가 되지 않았습니다. 다시 시도해주세요.");
+				mv.addObject("url", "testList.do");
+				mv.setViewName("forward:/forward.do");
+				return mv;
+			}	
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
+ 		return mv;
 	}
 
 	/**
 	 * 메시지를 alert 뿌리고 url에 해당하는 페이지로 이동한다.
-	 * 
 	 * @param url
 	 * @param msg
 	 * @param model

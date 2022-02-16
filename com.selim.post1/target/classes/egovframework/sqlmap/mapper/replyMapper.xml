@@ -11,30 +11,42 @@
 
 	<!-- 댓글 조회 -->
 	<select id="replyList" parameterType="java.lang.String" resultType="egovframework.example.ivory.vo.ReplyVo">
-	    SELECT
-	        replyNo, testId, writer, content, regDate
-	    FROM reply
-	        WHERE testId = #{testId}        
+		SELECT replyNo,
+		       testId,
+		       writer,
+		       content,
+		       regDate
+		  FROM reply
+		 WHERE testId = #{testId}   
 	</select>
 
 	<!-- 댓글 작성 -->
 	<insert id="replyWrite" parameterType="egovframework.example.ivory.vo.ReplyVo">
-	    INSERT INTO reply(testId,replyNo, writer, content, regDate)
-	        VALUE(#{testId},#{replyNo}, #{writer}, #{content}, #{regDate})
+		INSERT INTO reply
+		            (testId,
+		             replyNo,
+		             writer,
+		             content,
+		             regDate)
+		     VALUES (#{testId},
+		             #{replyNo},
+		             #{writer},
+		             #{content},
+		             #{regDate})
 	</insert>
 	    
 	<!-- 댓글 수정 -->
 	<update id="replyModify" parameterType="egovframework.example.ivory.vo.ReplyVo">
-	    UPDATE reply SET
-	        writer = #{writer},
-	        content = #{content}
-	    WHERE  replyNo= #{replyNo}    
+		UPDATE reply
+		   SET writer = #{writer},
+		       content = #{content}
+		 WHERE replyNo = #{replyNo} 
 	</update>
 	
 	<!-- 댓글 삭제 -->
 	<delete id="replyDelete"  parameterType="java.lang.String">
-	    DELETE FROM reply
-	    WHERE  replyNo = #{replyNo}
+		DELETE FROM reply
+		 WHERE replyNo = #{replyNo} 
 	</delete>
 
 </mapper>

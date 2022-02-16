@@ -2,6 +2,7 @@ package egovframework.example.ivory.dao;
  
 import java.util.List;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.example.ivory.vo.Search;
 import egovframework.example.ivory.vo.TestVo;
@@ -12,11 +13,13 @@ public interface TestDao {
  
     public List<TestVo> selectTest(Search search) throws Exception;
  
-    public int insertTest(TestVo testVo) throws Exception;
+//    public int insertTest(TestVo testVo) throws Exception;
+    
+    int insertTest(TestVo testVo,  testFileUploadVo fileVo,MultipartFile file) throws Exception;
  
     public TestVo selectDetail(String testId)throws Exception;
  
-    public int updateTest(TestVo testVo) throws Exception;
+    public int updateTest(TestVo testVo, testFileUploadVo fileVo, MultipartFile file) throws Exception;
  
     public int deleteTest(String testId) throws Exception;
     
@@ -37,7 +40,5 @@ public interface TestDao {
 	public testFileUploadVo fileDownload(testFileUploadVo fileVo) throws Exception;
 
 	public String selectRowNum();
-
-
  
 }

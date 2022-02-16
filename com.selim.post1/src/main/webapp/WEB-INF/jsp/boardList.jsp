@@ -20,6 +20,9 @@ a {
 .row>*{
     width:auto;
 }
+.hidden{
+	display:none;
+}
 </style>
 </head>
 <body>
@@ -31,7 +34,6 @@ a {
 
     <div class="container">
     <%
-    	
     	session = request.getSession();
     	if(session.getAttribute("userId")!= null) {
     		out.print("<h5>"+session.getAttribute("userId")+"님 반갑습니다."+"<h5>");
@@ -62,7 +64,7 @@ a {
  
             <tbody>
                 <c:forEach items="${list }" var="result">
-                    <tr>
+                	<tr>
                         <td>${result.testId}</td>                        
                         <td><a href="testDetail.do?testId=${result.testId}">${result.testTitle}</a></td>
                         <td>${result.testName}</td>
@@ -74,7 +76,7 @@ a {
         <!-- pagination start -->
         <div id="paginationBox" class="pagination1">
             <ul class="pagination" style="justify-content: center;">
- 
+ 			
                 <c:if test="${pagination.prev}">
                     <li class="page-item"><a class="page-link" href="#"
                         onClick="fn_prev('${pagination.page}', '${pagination.range}', '${pagination.rangeSize}', '${pagination.listSize}'
@@ -120,7 +122,6 @@ a {
  
             <div>
                 <button class="btn btn-sm btn-primary"  name="btnSearch" id="btnSearch">검색</button>
-<!--                 <button class="btn btn-sm btn-primary" name="btnlist" id="btnSearch">목록으로</button> -->
             </div>
  
         </div>
@@ -144,7 +145,7 @@ a {
 </body>
     <script type="text/javascript">
     //이전 버튼 이벤트
-    //5개의 인자값을 가지고 이동 testList.do
+	//5개의 인자값을 가지고 이동 testList.do
     //무조건 이전페이지 범위의 가장 앞 페이지로 이동
     function fn_prev(page, range, rangeSize, listSize, searchType, keyword) {
             

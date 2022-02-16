@@ -23,6 +23,7 @@ public class Pagination {
     private boolean prev; //이전페이지
     
     private boolean next; //다음페이지
+    
  
     public int getListSize() {
         return listSize;
@@ -112,6 +113,7 @@ public class Pagination {
         this.next = next;
     }
     
+    
     public void pageInfo(int page, int range, int listCnt){
         //현재페이지
         this.page = page;
@@ -147,5 +149,6 @@ public class Pagination {
         }
         
     }
+
 }
 

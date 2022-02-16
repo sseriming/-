@@ -6,34 +6,49 @@
 
 	<!-- 회원가입 -->
 	<insert id="register" parameterType="egovframework.example.ivory.vo.MemberVo">
-		INSERT INTO member( userId,userPw,userEmail,enterDate,userName)
-		VALUES(#{userId},#{userPw},#{userEmail},now(),#{userName})
+		INSERT INTO member
+		            (userId,
+		             userPw,
+		             userEmail,
+		             enterDate,
+		             userName)
+		     VALUES (#{userId},
+		             #{userPw},
+		             #{userEmail},
+		             Now(),
+		             #{userName}) 
 	</insert>		
 
-	<!--아이디확인 -->
+	<!-- 회원가입시 아이디 중복체크 -->
 	<select id="idCheck" parameterType="egovframework.example.ivory.vo.MemberVo" resultType="int">
-		SELECT COUNT(*) 
-		FROM member
-		WHERE userId=#{userId}
+		SELECT Count(*)
+		  FROM member
+		 WHERE userId = #{userId} 
 	</select>
 
-	<select id="login" parameterType="egovframework.example.ivory.vo.LoginDto" resultType="int">
-		SELECT COUNT(*) 
-		FROM member
-		WHERE userId=#{userId}
-	</select>
+<!-- 	<select id="login" parameterType="egovframework.example.ivory.vo.LoginDto" resultType="int"> -->
+<!-- 		SELECT COUNT(*)  -->
+<!-- 		  FROM member -->
+<!-- 		 WHERE userId = #{userId} -->
+<!-- 	</select> -->
 
-	<!-- 	로그인 -->
+	<!-- 로그인체크  -->
 	<select id="loginCheck"  parameterType="egovframework.example.ivory.vo.MemberVo" resultType="int">
-		SELECT COUNT(*)
-		FROM member
-		WHERE userId = #{userId} AND userPw=#{userPw}
+		SELECT Count(*)
+		  FROM member
+		 WHERE userId = #{userId}
+		       AND userPw = #{userPw} 
 	</select>
 	
 	<select id = "viewMember" resultType="egovframework.example.ivory.vo.MemberVo">
-		SELECT userId AS userId, userPw AS userPw, userEmail AS userEmail, enterDate AS enterDate, userName As userName
-		FROM member
-		WHERE userId = #{userId} AND userPw= #{userPw}   
+		SELECT userId    AS userId,
+		       userPw    AS userPw,
+		       userEmail AS userEmail,
+		       enterDate AS enterDate,
+		       userName  AS userName
+		  FROM member
+		 WHERE userId = #{userId}
+		       AND userPw = #{userPw} 
 	</select>
 
 </mapper>

@@ -37,26 +37,36 @@ public class MemberController {
 		memberVo.setUserId(userId);
 		memberVo.setUserPw(userPw);
 		
-		int login = service.loginCheck(memberVo);
-		
-		
-		if(login >= 1) {			
-				session.setAttribute("userId",memberVo.getUserId());
-				model.addAttribute("login",login);
-				response.getWriter().print(true); 
-		}else {
-				response.getWriter().print(false); 
-			}		
+		try {
+			int login = service.loginCheck(memberVo);
+			if(login >= 1) {			
+					session.setAttribute("userId",memberVo.getUserId());
+					model.addAttribute("login",login);
+					System.out.println("로그인 성공");
+					response.getWriter().print(true);
+			}else {
+					System.out.println("로그인 실패");
+					response.getWriter().print(false);
+				}	
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+				
 	}
 	
 	
 	//로그아웃 처리
 	@RequestMapping("logout.do")
 	public String logout(HttpServletRequest request) throws Exception {
-	
-		HttpSession session = request.getSession();
-		session.invalidate();
-		return "main";
+		try {
+			HttpSession session = request.getSession();
+			session.invalidate();
+			return "main";
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 	
 	//회원가입 get
@@ -68,11 +78,10 @@ public class MemberController {
 	@RequestMapping(value = "/register.do", method = RequestMethod.POST)
 	public String postRegister(MemberVo memberVo) throws Exception {
 		
-
 		//로직
 		service.register(memberVo);
-		
 		return "main";
+		
 	}
 	
 
@@ -83,16 +92,20 @@ public class MemberController {
 	public String memberIdChkPOST(String userId) throws Exception{
 		
 		int result = service.idCheck(userId);
+		try {
+			if(result != 0) {
+				
+				return "fail";	// 중복 아이디가 존재
+				
+			} else {
+				System.out.println("중복아이디 없음.");
+				return "success";	// 중복 아이디 x
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
-		if(result != 0) {
-			
-			return "fail";	// 중복 아이디가 존재
-			
-		} else {
-			
-			return "success";	// 중복 아이디 x
-			
-		}	
 		
 	} // memberIdChkPOST() 종료
 	

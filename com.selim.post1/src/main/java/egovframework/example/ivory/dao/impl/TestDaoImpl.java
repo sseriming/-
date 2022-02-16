@@ -6,7 +6,8 @@ import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
- 
+import org.springframework.web.multipart.MultipartFile;
+
 import egovframework.example.ivory.dao.TestDao;
 import egovframework.example.ivory.service.TestMapper;
 import egovframework.example.ivory.vo.Search;
@@ -27,7 +28,7 @@ public class TestDaoImpl implements TestDao {
     }
  
     @Override
-    public int insertTest(TestVo testVo) throws Exception {
+    public int insertTest(TestVo testVo ,testFileUploadVo fileVo,MultipartFile file) throws Exception {
         TestMapper mapper = sqlSession.getMapper(TestMapper.class);
         return mapper.insertTest(testVo);
     }
@@ -39,7 +40,7 @@ public class TestDaoImpl implements TestDao {
     }
  
     @Override
-    public int updateTest(TestVo testVo) throws Exception {
+    public int updateTest(TestVo testVo, testFileUploadVo fileVo, MultipartFile file) throws Exception {
         TestMapper mapper = sqlSession.getMapper(TestMapper.class);
         return mapper.updateTest(testVo);
     }

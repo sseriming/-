@@ -20,22 +20,12 @@
 	a {
     text-decoration: auto;
 	}
-
+.hidden{
+	display:none;
+}
 
 </style>
-<!-- Latest compiled and minified CSS -->
-<!-- <link rel="stylesheet" -->
-<!--     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" -->
-<!--     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" -->
-<!--     crossorigin="anonymous"> -->
- 
-<!-- Optional theme -->
-<!-- <link rel="stylesheet" -->
-<!--     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" -->
-<!--     integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" -->
-<!--     crossorigin="anonymous"> -->
- 
-<!-- Latest compiled and minified JavaScript -->
+
 <script
     src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -55,15 +45,10 @@
             <input type="hidden" id="orgName" name="orgName" class="form-control" />
             <input type="hidden" id="fileSize" name="fileSize" class="form-control" />
 			<input type="hidden" id="fileNo" name="fileNo" value=""> 
-
+			<input type="hidden" id="testId" name="testId" value="${vo.testId }"/>
 				
             <table class="table table-bordered">
                 <tbody>
-                    <tr>
-                        <th>글번호</th>
-                        <td><input name="testId" type="text" value="${vo.testId}"
-                            class="form-control" readonly /></td>
-                    </tr>
                     <tr>
                         <th>작성자</th>
                         <td><input type="text" value="${vo.testName}"

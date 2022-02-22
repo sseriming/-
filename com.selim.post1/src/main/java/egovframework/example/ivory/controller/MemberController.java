@@ -91,8 +91,8 @@ public class MemberController {
 	@ResponseBody
 	public String memberIdChkPOST(String userId) throws Exception{
 		
-		int result = service.idCheck(userId);
 		try {
+		int result = service.idCheck(userId);
 			if(result != 0) {
 				
 				return "fail";	// 중복 아이디가 존재

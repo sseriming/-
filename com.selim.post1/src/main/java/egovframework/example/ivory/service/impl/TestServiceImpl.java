@@ -19,7 +19,6 @@ public class TestServiceImpl implements TestService {
 
 	@Autowired
 	private TestDao testDao;
-//	private MultipartFile file;
 
 	@Override
 	public List<TestVo> selectTest(Search search) throws Exception {
@@ -33,6 +32,7 @@ public class TestServiceImpl implements TestService {
 
 		String testId = testDao.selectTestId(); // 키 생성
 		testVo.setTestId(testId);
+		
 		try {
 			int result = testDao.insertTest(testVo, fileVo, file);
 			if (result == 1) {
@@ -49,6 +49,7 @@ public class TestServiceImpl implements TestService {
 						}
 					}
 					fileVo.setTestId(testId);
+					
 
 					String fileNo = testDao.selectFileNo();
 					fileVo.setFileNo(fileNo);
@@ -68,8 +69,9 @@ public class TestServiceImpl implements TestService {
 						e.printStackTrace();
 					}
 					testDao.insertFile(fileVo);
+					System.out.println("등록 완료");
 				} else {
-					System.out.println("에러 발생.");
+					System.out.println("등록 실패");
 				}
 			}
 		} catch (Exception e) {
@@ -90,7 +92,6 @@ public class TestServiceImpl implements TestService {
 
 		String uploadFolder = "C:\\upload"; // 폴더 경로
 		File Folder = new File(uploadFolder);
-
 		// 해당 디렉토리가 없을 경우 디렉토리 생성
 		if (!Folder.exists()) {
 			try {
@@ -124,12 +125,15 @@ public class TestServiceImpl implements TestService {
 					}
 					int result2 = testDao.updateFile(fileVo);
 					if (result2 == 1) {
-						System.out.println("수정완료");
+						System.out.println("수정 완료");
 					} else {
 						 testDao.insertFile(fileVo);
+						 System.out.println("수정 완료");
 					}
 				} 
-			} 
+			} else {
+				System.out.println("수정 실패");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

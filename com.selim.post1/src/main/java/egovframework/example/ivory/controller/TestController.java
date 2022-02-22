@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -15,13 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import egovframework.example.ivory.dao.TestDao;
 import egovframework.example.ivory.service.ReplyService;
 import egovframework.example.ivory.service.TestService;
 import egovframework.example.ivory.vo.ReplyVo;
@@ -49,12 +45,14 @@ public class TestController {
 	@RequestMapping(value = "/testDetail.do")
 	public String viewForm(@ModelAttribute("testVo") TestVo testVo,@ModelAttribute("testFileUploadVo") testFileUploadVo fileVo, Model model, HttpServletRequest request,
 			@RequestParam String testId) throws Exception {
-
+//		,@RequestParam(value= "rowNum", required=false)String rowNum
 		try {
 			testVo.setTestId(testId);
 
 			testVo = testService.selectDetail(testId);
 			model.addAttribute("vo", testVo);
+			
+		
 
 			fileVo.setTestId(testId);
 			fileVo = testService.fileDetail(testId);
@@ -103,9 +101,7 @@ public class TestController {
 					return mv;
 				}
 			 }catch(Exception e) {
-				 mv.addObject("msg", "ERROR");
 				 e.printStackTrace();
-				 
 			}
 			return mv;
 		}
@@ -144,20 +140,35 @@ public class TestController {
 	
 
 	// 첨부파일 삭제
-	@RequestMapping(value = "/deleteFile.do", method = RequestMethod.POST)
-	public String deleteFile(HttpServletRequest request, @ModelAttribute("fileVo") testFileUploadVo fileVo) throws Exception {
+	@RequestMapping(value = "/deleteFile.do")
+	public ModelAndView deleteFile(HttpServletRequest request,@ModelAttribute("testVo") TestVo testVo, @ModelAttribute("fileVo") testFileUploadVo fileVo) throws Exception {
+		String fileNo= request.getParameter("fileNo");
+		ModelAndView mv = new ModelAndView();
 		try {
-			testService.deleteFile(fileVo.getTestId());
+			int result = testService.deleteFile(fileNo);
+			if(result ==1 ) {
+				mv.addObject("testId", testVo.getTestId());
+				mv.addObject("url", "testDetail.do");
+				mv.setViewName("forward:/forward.do");
+				return mv;
+			} else {
+				mv.addObject("msg", "삭제가 되지 않았습니다. 다시 시도해주세요.");
+				mv.addObject("testId", testVo.getTestId());
+				mv.addObject("url", "/testDetail.do");
+				mv.setViewName("forward:/forward.do");
+				return mv;
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/testDetail.do";	
+		return mv;	
 
 	}
 
 	// 글삭제
 	@RequestMapping(value = "/deleteTest.do")
-	public ModelAndView deleteTest(HttpServletRequest request, @ModelAttribute("replyVo") ReplyVo replyVo) throws Exception {
+	public ModelAndView deleteTest(HttpServletRequest request
+			, @ModelAttribute("replyVo") ReplyVo replyVo) throws Exception {
 		// 1.파라미터 세팅
 		ModelAndView mv = new ModelAndView();
 		String testId = request.getParameter("testId");
@@ -166,8 +177,6 @@ public class TestController {
 		try {
 			int result = testService.deleteTest(testId);
 			if (result == 1) {
-				testService.deleteFile(testId);
-				replyService.replyDelete(testId);
 				mv.addObject("msg", "삭제되었습니다.");
 				mv.addObject("url", "/testList.do");
 				mv.setViewName("forward:/forward.do");
@@ -190,12 +199,8 @@ public class TestController {
 	public String testListDo(Model model, @RequestParam(required = false, defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "1") int range,
 			@RequestParam(required = false, defaultValue = "testTitle") String searchType,
-			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search) throws Exception {
+			@RequestParam(required = false) String keyword, @ModelAttribute("search") Search search, @ModelAttribute("testVo") TestVo testVo) throws Exception {
 		
-//		String testId = testDao.selectTestId(); // 키 생성
-//		testVo.setTestId(testId);
-//		String rowNum = testService.selectRowNum();
-//		testVo.setRowNum(rowNum);
 		
 		// 검색
 		model.addAttribute("search", search);

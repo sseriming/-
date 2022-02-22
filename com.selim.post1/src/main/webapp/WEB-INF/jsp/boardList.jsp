@@ -49,7 +49,8 @@ a {
             style="border: 1px solid;">
             <colgroup>
                 <col width="10%" />
-                <col width="50%" />
+                <col width="30%" />
+                <col width="20%" />
                 <col width="20%" />
                 <col width="20%" />
             </colgroup>
@@ -58,6 +59,7 @@ a {
                     <th>번호</th>
                     <th>제목</th>
                     <th>작성자</th>
+                    <th>작성시간</th>
                     <th>등록일자</th>
                 </tr>
             </thead>
@@ -65,10 +67,13 @@ a {
             <tbody>
                 <c:forEach items="${list }" var="result">
                 	<tr>
-                        <td>${result.testId}</td>                        
+                        <td>${result.rowNum}</td>
                         <td><a href="testDetail.do?testId=${result.testId}">${result.testTitle}</a></td>
                         <td>${result.testName}</td>
+<%--                         <td class="hidden" >${result.testId}</td>                         --%>
+                        <td>${result.testTime}</td>
                         <td>${result.testDate}</td>
+                        
                     </tr>
                 </c:forEach>
             </tbody>

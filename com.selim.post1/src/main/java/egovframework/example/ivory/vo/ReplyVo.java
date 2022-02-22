@@ -7,6 +7,9 @@ public class ReplyVo {
     private String writer;
     private String content;
     private String regDate;
+    private String showReply;
+    
+    
 	public String getTestId() {
 		return testId;
 	}
@@ -37,10 +40,16 @@ public class ReplyVo {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
+	public String getShowReply() {
+		return showReply;
+	}
+	public void setShowReply(String showReply) {
+		this.showReply = showReply;
+	}
 	
 	@Override
 	public String toString() {
-		return "ReplyVo [testId="+testId+", content="+content+",writer="+writer+",replyNo="+replyNo+",regDate="+regDate+"]";
+		return "ReplyVo [testId="+testId+", content="+content+",writer="+writer+",replyNo="+replyNo+",regDate="+regDate+",showReply="+showReply+"]";
 	}
 	
 }

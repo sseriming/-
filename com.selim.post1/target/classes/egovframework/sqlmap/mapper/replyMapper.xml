@@ -15,9 +15,10 @@
 		       testId,
 		       writer,
 		       content,
-		       regDate
+		       regDate,
+		       showReply
 		  FROM reply
-		 WHERE testId = #{testId}   
+		 WHERE testId = #{testId} AND showReply ='Y'   
 	</select>
 
 	<!-- 댓글 작성 -->
@@ -27,26 +28,21 @@
 		             replyNo,
 		             writer,
 		             content,
-		             regDate)
+		             regDate,
+		             showReply)
 		     VALUES (#{testId},
 		             #{replyNo},
 		             #{writer},
 		             #{content},
-		             #{regDate})
+		             #{regDate},
+		             'Y')
 	</insert>
-	    
-	<!-- 댓글 수정 -->
-	<update id="replyModify" parameterType="egovframework.example.ivory.vo.ReplyVo">
-		UPDATE reply
-		   SET writer = #{writer},
-		       content = #{content}
-		 WHERE replyNo = #{replyNo} 
-	</update>
 	
 	<!-- 댓글 삭제 -->
 	<delete id="replyDelete"  parameterType="java.lang.String">
-		DELETE FROM reply
-		 WHERE replyNo = #{replyNo} 
+		UPDATE reply
+		   SET showReply='N'
+		 WHERE replyNo = #{replyNo}
 	</delete>
 
 </mapper>

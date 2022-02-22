@@ -70,7 +70,7 @@
                     <label for="userId" class="col-lg-2 control-label">아이디</label>
                     <div class="col-lg-10">
                         <input type="text" class="id_input form-control" id="userId" name="userId" data-rule-required="true" placeholder="30자이내의 알파벳, 언더스코어(_), 숫자만 입력 가능합니다." maxlength="30">
-							<span class="id_input_re_1">사용 가능한 아이디입니다.</span>
+							<span class="id_input_re_1" >사용 가능한 아이디입니다.</span>
 							<span class="id_input_re_2">아이디가 이미 존재합니다.</span>						
                     </div>
                     
@@ -285,7 +285,8 @@
                         divPasswordCheck.addClass("has-error");
                         $('#passwordCheck').focus();
                         return false;
-                    }else{
+                    }
+                    else{
                         divPasswordCheck.removeClass("has-error");
                         divPasswordCheck.addClass("has-success");
                     }
@@ -300,10 +301,25 @@
                         $('#userName').focus();
                         return false;
                     }else{
-                        divName.removeClass("has-error");
-                        divName.addClass("has-success");
-                        alert("회원가입이 완료되었습니다.");
+                        divPasswordCheck.removeClass("has-error");
+                        divPasswordCheck.addClass("has-success");
                     }
+                    
+                   
+                    
+                    if($('.id_input_re_1').css("display")=="none" ){
+                		alert("아이디를 다시 확인해주세요.");
+                        
+                        divPasswordCheck.removeClass("has-success");
+                        divPasswordCheck.addClass("has-error");
+                        $('#userId').focus();
+                        return false;
+                	} 
+                    
+                    else {
+                        alert("회원가입이 완료되었습니다.");
+                    	} 
+                   
                     
                    
                     

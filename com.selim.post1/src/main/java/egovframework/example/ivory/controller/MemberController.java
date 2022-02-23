@@ -31,12 +31,14 @@ public class MemberController {
 			@RequestParam String userId,
 			HttpServletRequest request, HttpSession httpSession, HttpServletResponse response, Model model) throws Exception {
 		
+		//1. 파라미터 세팅
 		MemberVo memberVo= new MemberVo();
 		HttpSession session = request.getSession();
 		
 		memberVo.setUserId(userId);
 		memberVo.setUserPw(userPw);
-		
+	
+		//2. 로직
 		try {
 			int login = service.loginCheck(memberVo);
 			if(login >= 1) {			

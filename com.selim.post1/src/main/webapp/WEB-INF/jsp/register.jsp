@@ -314,11 +314,9 @@
                         divPasswordCheck.addClass("has-error");
                         $('#userId').focus();
                         return false;
-                	} 
-                    
-                    else {
+                	} else{
                         alert("회원가입이 완료되었습니다.");
-                    	} 
+                    } 
                    
                     
                    

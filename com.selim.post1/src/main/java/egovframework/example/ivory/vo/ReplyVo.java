@@ -46,6 +46,7 @@ public class ReplyVo {
 	public void setShowReply(String showReply) {
 		this.showReply = showReply;
 	}
+
 	
 	@Override
 	public String toString() {

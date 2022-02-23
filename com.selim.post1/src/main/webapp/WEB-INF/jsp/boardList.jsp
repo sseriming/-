@@ -68,7 +68,7 @@ a {
                 <c:forEach items="${list }" var="result">
                 	<tr>
                         <td>${result.rowNum}</td>
-                        <td><a href="testDetail.do?testId=${result.testId}">${result.testTitle}</a></td>
+                        <td><a href="testDetail.do?testId=${result.testId}">${result.testTitle}</a> </td>
                         <td>${result.testName}</td>
 <%--                         <td class="hidden" >${result.testId}</td>                         --%>
                         <td>${result.testTime}</td>

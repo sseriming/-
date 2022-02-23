@@ -40,5 +40,6 @@ public interface TestDao {
 	public testFileUploadVo fileDownload(testFileUploadVo fileVo) throws Exception;
 
 	public String selectRowNum();
+	
  
 }

@@ -25,6 +25,7 @@ public class TestServiceImpl implements TestService {
 		return testDao.selectTest(search);
 	}
 
+	//글 작성
 	@Override
 	public int insertTest(TestVo testVo, testFileUploadVo fileVo, MultipartFile file) throws Exception {
 
@@ -69,16 +70,14 @@ public class TestServiceImpl implements TestService {
 						e.printStackTrace();
 					}
 					testDao.insertFile(fileVo);
-					System.out.println("등록 완료");
-				} else {
-					System.out.println("등록 실패");
-				}
+				} 
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return 1;
+		
 	}
 
 	@Override
@@ -132,12 +131,13 @@ public class TestServiceImpl implements TestService {
 					}
 				} 
 			} else {
-				System.out.println("수정 실패");
+				return 0;
 			}
+			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return 0;
 		}
-		return 1;
 	}
 
 	@Override
@@ -191,5 +191,6 @@ public class TestServiceImpl implements TestService {
 	public String selectRowNum() {
 		return testDao.selectRowNum();
 	}
+
 
 }
